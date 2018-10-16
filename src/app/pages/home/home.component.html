@@ -1,0 +1,18 @@
+<!-- <p>{{ posts | json }}</p>
+<br>
+
+<p>{{ comments | json }}</p> -->
+
+<ul>
+  <li *ngFor="let post of posts">
+    <h2> {{ post.title.rendered }}</h2>
+    <span [innerHtml]="post.content.rendered"></span>
+    <!-- <span>{{ for( let comment of comments) }}</span>
+    <ul *ngIf="post.id === comment.post">
+      <li>
+        <span *ngIf="post.id === comment.post">{{ comment.content.rendered }}</span>
+
+      </li>
+    </ul> -->
+  </li>
+</ul>
