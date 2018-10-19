@@ -1,3 +1,11 @@
-<p>
-  forum works!
-</p>
+<header class="pt-5 mat-typography">
+  <h1>Forum</h1>
+</header>
+
+<main class="mat-typography">
+  <div *ngFor="let post of posts">
+    <h1>{{ post.title.rendered }}</h1>
+    <div [innerHTML]="post.content.rendered"></div>
+  </div>
+
+</main>

@@ -1,9 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRouting } from './app.routing';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  MatTabsModule,
+  MatMenuModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatInputModule,
+  MatFormFieldModule
+} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -12,6 +22,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForumComponent } from './pages/forum/forum.component';
+import { WordpressService } from './services/wordpress.service';
 
 @NgModule({
   declarations: [
@@ -27,9 +38,17 @@ import { ForumComponent } from './pages/forum/forum.component';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppRouting
+    FormsModule,
+    AppRouting,
+    MatTabsModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
-  providers: [],
+  providers: [WordpressService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

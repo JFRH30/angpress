@@ -1,18 +1,20 @@
-<!-- <p>{{ posts | json }}</p>
-<br>
+<header class="pt-5 mat-typography">
+  <h1>Home</h1>
+  <sub>This should display top posts top page showcase video</sub>
+</header>
 
-<p>{{ comments | json }}</p> -->
+<main class="pt-5 mat-typography">
+  <section>
+    <h1>Showcase</h1>
+  </section>
+  <section>
+    <h1>Posts</h1>
+  </section>
+  <section>
+    <h1>Pages</h1>
+  </section>
+</main>
 
-<ul>
-  <li *ngFor="let post of posts">
-    <h2> {{ post.title.rendered }}</h2>
-    <span [innerHtml]="post.content.rendered"></span>
-    <!-- <span>{{ for( let comment of comments) }}</span>
-    <ul *ngIf="post.id === comment.post">
-      <li>
-        <span *ngIf="post.id === comment.post">{{ comment.content.rendered }}</span>
-
-      </li>
-    </ul> -->
-  </li>
-</ul>
+<aside class="mat-typography">
+  <h1>Sidebar</h1>
+</aside>

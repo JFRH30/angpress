@@ -1,3 +1,29 @@
-<p>
-  login works!
-</p>
+<div class="d-flex justify-content-center align-items-center h-100 mat-typography">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Login</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit(login.value)" #login="ngForm">
+        <mat-form-field>
+          <mat-label>Username: </mat-label>
+          <input matInput type="text" name="username" ngModel required>
+          <mat-error>
+            <sub>Please input username</sub>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password: </mat-label>
+          <input matInput type="password" name="password" ngModel>
+          <mat-error>
+            <sub>Please input password</sub>
+          </mat-error>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" type="submit"> Login </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
