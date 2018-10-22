@@ -12,8 +12,9 @@ import {
   MatButtonModule,
   MatCardModule,
   MatInputModule,
-  MatFormFieldModule
+  MatFormFieldModule,
 } from '@angular/material';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -22,7 +23,6 @@ import { NavComponent } from './components/nav/nav.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForumComponent } from './pages/forum/forum.component';
-import { WordpressService } from './services/wordpress.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { WordpressService } from './services/wordpress.service';
     NavComponent,
     LoginComponent,
     RegisterComponent,
-    ForumComponent
+    ForumComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,9 +46,10 @@ import { WordpressService } from './services/wordpress.service';
     MatButtonModule,
     MatCardModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    CKEditorModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
