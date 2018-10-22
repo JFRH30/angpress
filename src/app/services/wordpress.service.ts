@@ -1,52 +1,51 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
-/**
- * these are the url of the wp_bogz.
- */
-const wordpressUrl = 'http://localhost:8000/wordpress';
-const rest = wordpressUrl + '/wp-json/wp/v2';
+const wordpressEndpoint = 'http://localhost:80/wordpress';
+const restApiEndpoint = wordpressEndpoint + '/wp-json/wp/v2';
+const userEndpoint = restApiEndpoint + '/users';
+const postEndpoint = restApiEndpoint + '/posts';
+const commentEndpoint = restApiEndpoint + '/comments';
+const catagoryEndpoint = restApiEndpoint + '/categories';
+const profileEndpoint = wordpressEndpoint + '/wp-json/custom/api/profile';
 
-/**
- * these are endpoints expose by wordpress.
- */
-const categoryEndpoint = rest + '/categories';
-const commentEndpoint = rest + '/comments';
-const postEndpoint = rest + '/posts';
-const userEndpoint = rest + '/users';
+export interface WpBasicAuth {
+  login: string;
+  password: string;
+}
 
 export interface UserCreate {
-  username: string; // Login name for the user. Required: 1
-  name?: string; // 	Display name for the user.
-  first_name?: string; // First name for the user.
-  last_name?: string; // Last name for the user.
-  email: string; // The email address for the user. Required: 1
-  url?: string; // URL of the user.
-  description?: string; // Description of the user.
-  locale?: string; // Locale for the user. One of: , en_US
-  nickname?: string; // The nickname for the user.
-  slug?: string; // An alphanumeric identifier for the user.
-  roles?: string; // Roles assigned to the user.
-  password: string; // Password for the user (never included). Required: 1
-  meta?: string; // Meta fields.
+  username: string; // Required: 1
+  email: string; // Required: 1
+  password: string; // Required: 1
+  name?: string;
+  first_name?: string;
+  last_name?: string;
+  url?: string;
+  description?: string;
+  locale?: string;
+  nickname?: string;
+  slug?: string;
+  roles?: string;
+  meta?: string;
 }
 
 export interface UserUpdate {
-  id?: number; // user id
-  username?: string; // Login name for the user. Required: 1
-  name?: string; // 	Display name for the user.
-  first_name?: string; // First name for the user.
-  last_name?: string; // Last name for the user.
-  email?: string; // The email address for the user. Required: 1
-  url?: string; // URL of the user.
-  description?: string; // Description of the user.
-  locale?: string; // Locale for the user. One of: , en_US
-  nickname?: string; // The nickname for the user.
-  slug?: string; // An alphanumeric identifier for the user.
-  roles?: string; // Roles assigned to the user.
-  password?: string; // Password for the user (never included). Required: 1
-  meta?: string; // Meta fields.
+  id?: number;
+  username?: string;
+  name?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  url?: string;
+  description?: string;
+  locale?: string;
+  nickname?: string;
+  slug?: string;
+  roles?: string;
+  password?: string;
+  meta?: string;
 }
 
 export interface UserResponse {
@@ -73,24 +72,24 @@ export interface UserResponse {
 }
 
 export interface PostCreate {
-  date?: string; // The date the object was published, in the site's timezone.
-  date_gmt?: string; // The date the object was published, as GMT.
-  slug?: string; // An alphanumeric identifier for the object unique to its type.
-  status?: string; // A named status for the object. One of: publish, future, draft, pending, private
-  password?: string; // A password to protect access to the content and excerpt.
-  title?: string; // The title for the object.
-  content?: string; // The content for the object.
-  author?: string; // The ID for the author of the object.
-  excerpt?: string; // The excerpt for the object.
-  featured_media?: string; // The ID of the featured media for the object.
-  comment_status?: string; // Whether or not comments are open on the object. One of: open, closed
-  ping_status?: string; // Whether or not the object can be pinged. One of: open, closed
-  format?: string; // The format for the object. One of: standard, aside, chat, gallery, link, image, quote, status, video, audio
-  meta?: string; // Meta fields.
-  sticky?: string; // Whether or not the object should be treated as sticky.
-  template?: string; // The theme file to use to display the object. One of:
-  categories?: string; // The terms assigned to the object in the category taxonomy.
-  tags?: string; // The terms assigned to the object in the post_tag taxonomy.
+  date?: string;
+  date_gmt?: string;
+  slug?: string;
+  status?: string;
+  password?: string;
+  title?: string;
+  content?: string;
+  author?: string;
+  excerpt?: string;
+  featured_media?: string;
+  comment_status?: string;
+  ping_status?: string;
+  format?: string;
+  meta?: string;
+  sticky?: string;
+  template?: string;
+  categories?: string;
+  tags?: string;
 }
 
 @Injectable({
@@ -99,31 +98,18 @@ export interface PostCreate {
 export class WordpressService {
   constructor(private http: HttpClient) {}
 
-  private get loginAuth() {
-    return this.getHttpOptions({
-      user_login: this.myId,
-      user_pass: this.mySecurityCode
-    });
-  }
+  /*********************************
+   * Shared Functions & Properties *
+   *********************************/
 
   /**
-   * Returns Http Options
-   * @param options options
-   * @return any
-   *
-   * @example
-   *  const options = this.getHttpOptions({ user_login: user.username, user_pass: user.password });
+   * will return httpOptions
+   * @param options used to pass username & password in heeader per http request.
    */
-  getHttpOptions(
-    options: {
-      user_login: string;
-      user_pass: string;
-    } = <any>{}
-  ) {
+  private getHttpOptions(options: WpBasicAuth = <any>{}) {
     const httpOptions = {
       headers: new HttpHeaders({
-        Authorization:
-          'Basic ' + btoa(`${options.user_login}:${options.user_pass}`),
+        Authorization: 'Basic ' + btoa(`${options.login}:${options.password}`),
         'Content-Type': 'application/json'
       })
     };
@@ -131,87 +117,137 @@ export class WordpressService {
   }
 
   /**
-   * Registers
-   * @param user User
-   * @example
-      wp.register({
-        username: this.chance.email(),
-        password: password,
-        email: this.chance.email()
-      }).subscribe(res => {
-        console.log('user register: ', res);
-      });
+   * will return httpOptions using the id & security code to supply Basic Authorization stored in locale storage.
+   */
+  private get wpAuthPass() {
+    return this.getHttpOptions({
+      login: this.getID,
+      password: this.getSecurityCode
+    });
+  }
+
+  /**
+   * determined if there is current user that is logged in.
+   */
+  get isLogged() {
+    return !!this.getID;
+  }
+
+  /**
+   * will saved in locale storage
+   * @param user data from http response that will be saved in locale storage.
+   */
+  private savedInLocale(user: UserResponse) {
+    localStorage.setItem('user_id', user.id.toString());
+    localStorage.setItem('user_email', user.email);
+    localStorage.setItem('user_username', user.username);
+    localStorage.setItem('user_security_code', user.security_code);
+  }
+
+  /**
+   * will get the id stored in locale storage.
+   */
+  get getID() {
+    return localStorage.getItem('user_id');
+  }
+
+  /**
+   * will get the email stored in locale storage.
+   */
+  get getEmail() {
+    return localStorage.getItem('user_email');
+  }
+
+  /**
+   * will get the username stored in locale storage.
+   */
+  get getUsername() {
+    return localStorage.getItem('user_username');
+  }
+
+  /**
+   * will get the security code stored in locale storage.
+   */
+  get getSecurityCode() {
+    return localStorage.getItem('user_security_code');
+  }
+
+  /*********************
+   * User related code *
+   *********************/
+
+  /**
+   * will return user data on subcribe.
+   * @param username will be the value passed in Basic Authorization username.
+   * @param password will be the value passed to Basic Authorization password.
+   */
+  login(username, password) {
+    const options = this.getHttpOptions({
+      login: username,
+      password: password
+    });
+    return this.getUser(options);
+  }
+
+  /**
+   * will remove all data stored in locale storage and logged out user.
+   */
+  logout() {
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_username');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_security_code');
+  }
+
+  /**
+   * will saved data in wordpress database & in locale storage.
+   * @param user data used to register user.
    */
   register(user: UserCreate) {
     return this.http
       .post<UserResponse>(userEndpoint, user)
-      .pipe(tap(data => this.saveUserData(data)));
+      .pipe(tap(data => this.savedInLocale(data)));
   }
 
   /**
-   * Login user can update only his user data.
-   * @param user User update data
-   * @note user cannot change 'username'. But everything else is changable.
+   * will update data stored in wordpress database & locale storage.
+   * @param user data to be updated in user information.
    */
-  updateProfile(user: UserUpdate) {
-    const options = this.getHttpOptions({
-      user_login: this.myId,
-      user_pass: this.mySecurityCode
-    });
+  updateUSer(user: UserUpdate) {
     return this.http
-      .post<UserResponse>(userEndpoint + '/me', user, options)
-      .pipe(tap(data => this.saveUserData(data)));
+      .post<UserResponse>(userEndpoint + '/me', user, this.wpAuthPass)
+      .pipe(tap(data => this.savedInLocale(data)));
   }
+
   /**
-   * Get user data from wordpress via rest api
-   * @param user User update data
+   * will return user data & save it in locale storage.
+   * @param auth (optional) used as options in the header.
    */
-  profile() {
+  getUser(auth?) {
+    if (!auth) {
+      auth = this.wpAuthPass;
+    }
     return this.http
-      .get<UserResponse>(
-        wordpressUrl + '/wp-json/custom/api/profile',
-        this.loginAuth
-      )
-      .pipe(tap(data => this.saveUserData(data)));
+      .get<UserResponse>(profileEndpoint, auth)
+      .pipe(tap(data => this.savedInLocale(<any>data)));
+  }
+
+  /*********************
+   * Post related code *
+   *********************/
+
+  /**
+   * will return all post.
+   */
+  getPosts() {
+    return this.http.get(postEndpoint);
   }
 
   /**
-   *
-   * @param user UserData
+   * will return post data.
+   * @param post data used in creating posts.
    */
-  private saveUserData(user: UserResponse) {
-    localStorage.setItem('user_id', user.id.toString());
-    localStorage.setItem('user_security_code', user.security_code);
-    localStorage.setItem('user_email', user.email);
-    localStorage.setItem('user_username', user.username);
-    localStorage.setItem('user_nickname', user.nickname);
-  }
-
-  logout() {
-    localStorage.removeItem('user_id');
-  }
-  get isLogged() {
-    return !!this.myId;
-  }
-
-  /**
-   * Returns user data saved in localStorage.
-   * @param key key sring like 'id', 'email', 'security_code', 'username'
-   */
-  private getUserData(key) {
-    return localStorage.getItem('user_' + key);
-  }
-  get myId() {
-    return this.getUserData('id');
-  }
-  get mySecurityCode() {
-    return this.getUserData('security_code');
-  }
-  get myNickname() {
-    return this.getUserData('nickname');
-  }
-
-  postCreate(post: PostCreate) {
-    return this.http.post<any>(postEndpoint, post, this.loginAuth);
+  createPost(post: PostCreate) {
+    return this.http.post<any>(postEndpoint, post, this.wpAuthPass);
   }
 }

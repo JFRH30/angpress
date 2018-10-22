@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WpService } from 'src/app/services/wp.service';
+import { WordpressService } from 'src/app/services/wordpress.service';
 import { FormGroup } from '@angular/forms';
 import { Chance } from 'chance';
 
@@ -10,7 +10,7 @@ import { Chance } from 'chance';
 })
 export class RegisterComponent implements OnInit {
   chance = Chance;
-  constructor(private wordpress: WpService) {}
+  constructor(private wordpress: WordpressService) {}
 
   ngOnInit() {}
 

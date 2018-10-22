@@ -48,7 +48,7 @@ import { WordpressService } from './services/wordpress.service';
     MatInputModule,
     MatFormFieldModule
   ],
-  providers: [WordpressService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

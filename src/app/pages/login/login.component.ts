@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  WpService,
-  profileEndpoint,
-  userEndpoint,
-  wordpressUrl,
-  rest
-} from 'src/app/services/wp.service';
-import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-
+import { WordpressService } from 'src/app/services/wordpress.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private wp: WpService, private http: HttpClient) {}
+  user = <any>{};
+  constructor(public wp: WordpressService) {
+    if (this.wp.isLogged) {
+      this.wp
+        .getUser()
+        .subscribe(data => console.log(data), err => console.log(err));
+    }
+  }
 
   ngOnInit() {}
 
-  onSubmit(form) {
-    this.wp.login(form).subscribe(res => console.log(res));
+  onSubmit() {
+    this.wp
+      .login(this.user.username, this.user.password)
+      .subscribe(res => console.log(res));
   }
 }

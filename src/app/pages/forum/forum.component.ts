@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WpService } from 'src/app/services/wp.service';
+import { WordpressService } from 'src/app/services/wordpress.service';
 
 @Component({
   selector: 'app-forum',
@@ -9,12 +9,14 @@ import { WpService } from 'src/app/services/wp.service';
 })
 export class ForumComponent implements OnInit, OnChanges {
   posts;
-  constructor(private wp: WpService) {
+  constructor(private wp: WordpressService) {
     this.wp.getPosts().subscribe(posts => (this.posts = posts));
   }
 
   ngOnInit() {}
   ngOnChanges() {
-    this.wp.getPosts().subscribe(posts => (this.posts = posts), (err => console.log(err)));
+    this.wp
+      .getPosts()
+      .subscribe(posts => (this.posts = posts), err => console.log(err));
   }
 }
