@@ -4,15 +4,15 @@
   "workbench.sideBar.location": "left",
   "window.zoomLevel": -1,
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Winter is Coming (Light)",
+  "workbench.colorTheme": "Winter is Coming (Dark Blue)",
   "emmet.showSuggestionsAsSnippets": true,
   "emmet.triggerExpansionOnTab": true,
   "html.format.indentInnerHtml": true,
   "html.format.indentHandlebars": true,
-  "html.format.preserveNewLines": false,
   "editor.formatOnSave": true,
   "prettier.singleQuote": true,
   "prettier.useTabs": true,
   "prettier.jsxBracketSameLine": true,
-  "prettier.trailingComma": "all"
+  "prettier.trailingComma": "all",
+  "html.format.endWithNewline": true
 }

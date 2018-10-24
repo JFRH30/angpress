@@ -1,0 +1,63 @@
+<div class="row justify-content-center align-items-center h-100 mat-typography">
+  <div class="col-sm-4 col-md-4 col-lg-4">
+
+    <mat-card>
+
+      <mat-card-header>
+        <mat-card-title>
+          <h1>Register</h1>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <form (ngSubmit)="onSubmit(register.value)" #register="ngForm">
+
+          <!-- username -->
+          <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input matInput type="text" name="username" ngModel required>
+            <mat-error>
+              <sub>Please input username</sub>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- first name -->
+          <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input matInput type="text" name="first_name" ngModel>
+          </mat-form-field>
+
+          <!-- last name -->
+          <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input matInput type="text" name="last_name" ngModel>
+          </mat-form-field>
+
+          <!-- email -->
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email" name="email" ngModel required>
+            <mat-error>
+              <sub>Please input email</sub>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- password -->
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" name="password" ngModel required>
+            <mat-error>
+              <sub>Please input password</sub>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- register button -->
+          <br>
+          <button mat-raised-button color="primary" type="submit"> Register </button>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { ForumComponent } from './pages/forum/forum.component';
-
+import { AuthGuard } from './services/auth.guard';
 const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'forum', component: ForumComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '', loadChildren: './pages/home/home.module#HomeModule' },
+  { path: 'forum', loadChildren: './pages/forum/forum.module#ForumModule' },
+  { path: 'auth', loadChildren: './pages/auth/auth.module#AuthModule' },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadChildren: './pages/profile/profile.module#ProfileModule',
+  },
+  {
+    path: '**',
+    loadChildren:
+      './pages/page-not-found/page-not-found.module#PageNotFoundModule',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRouting {}

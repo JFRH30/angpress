@@ -1,0 +1,17 @@
+mat-form-field {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+}
+
+#wp-content {
+  p {
+    iframe {
+      width: 100%;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

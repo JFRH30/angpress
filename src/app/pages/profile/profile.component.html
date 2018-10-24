@@ -1,0 +1,47 @@
+<main class="mat-typography">
+  <div class="row">
+    <div class="col-sm-12">
+      <mat-card>
+        <mat-card-header></mat-card-header>
+        <mat-card-content>
+          <form (ngSubmit)="onSubmit(profile.value)" #profile="ngForm">
+            <mat-form-field>
+              <mat-label> Username </mat-label>
+              <input matInput type="text" name="username" ngModel>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Name </mat-label>
+              <input matInput type="text" name="name" ngModel>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> First Name </mat-label>
+              <input matInput type="text" name="first_name" ngModel>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Last Name </mat-label>
+              <input matInput type="text" name="last_name" ngModel>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Nickname </mat-label>
+              <input matInput type="text" name="nickname" ngModel>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Email </mat-label>
+              <input matInput type="text" name="email" ngModel>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</main>
+<section *ngIf="user; else loader">
+  <h1> Username: {{ user.username }}</h1>
+  <h1> First Name:{{ user.first_name }}</h1>
+  <h1> Last Name:{{ user.last_name }}</h1>
+  <h1> Email: {{ user.email }}</h1>
+  <h1> Nickname: {{ user.nickname }}</h1>
+</section>
+<ng-template #loader>
+  <mat-spinner></mat-spinner>
+</ng-template>

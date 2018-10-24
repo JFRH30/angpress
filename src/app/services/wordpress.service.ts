@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { USE_VALUE } from '@angular/core/src/di/injector';
 
 const wordpressEndpoint = 'http://localhost:80/wordpress';
 const restApiEndpoint = wordpressEndpoint + '/wp-json/wp/v2';
@@ -93,7 +94,7 @@ export interface PostCreate {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WordpressService {
   constructor(private http: HttpClient) {}
@@ -110,8 +111,8 @@ export class WordpressService {
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: 'Basic ' + btoa(`${options.login}:${options.password}`),
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     };
     return httpOptions;
   }
@@ -122,7 +123,7 @@ export class WordpressService {
   private get wpAuthPass() {
     return this.getHttpOptions({
       login: this.getID,
-      password: this.getSecurityCode
+      password: this.getSecurityCode,
     });
   }
 
@@ -139,9 +140,29 @@ export class WordpressService {
    */
   private savedInLocale(user: UserResponse) {
     localStorage.setItem('user_id', user.id.toString());
+    localStorage.setItem('user_name', user.name);
+    localStorage.setItem('user_first_name', user.first_name);
+    localStorage.setItem('user_last_name', user.last_name);
     localStorage.setItem('user_email', user.email);
     localStorage.setItem('user_username', user.username);
     localStorage.setItem('user_security_code', user.security_code);
+    localStorage.setItem('user_nickname', user.nickname);
+  }
+
+  /**
+   * this will return an object of all store information in locale storage.
+   */
+  get getSavedInLocale() {
+    const user = {
+      id: localStorage.getItem('user_id'),
+      name: localStorage.getItem('user_name'),
+      first_name: localStorage.getItem('user_first_name'),
+      last_name: localStorage.getItem('user_last_name'),
+      email: localStorage.getItem('user_email'),
+      security_code: localStorage.getItem('user_security_code'),
+      nickname: localStorage.getItem('user_nickname'),
+    };
+    return user;
   }
 
   /**
@@ -149,6 +170,27 @@ export class WordpressService {
    */
   get getID() {
     return localStorage.getItem('user_id');
+  }
+
+  /**
+   * will get the name stored in locale storage.
+   */
+  get getName() {
+    return localStorage.getItem('user_name');
+  }
+
+  /**
+   * will get the first name stored in locale storage.
+   */
+  get getFirstname() {
+    return localStorage.getItem('user_first_name');
+  }
+
+  /**
+   * will get the last name stored in locale storage.
+   */
+  get getLastname() {
+    return localStorage.getItem('user_last_name');
   }
 
   /**
@@ -172,6 +214,13 @@ export class WordpressService {
     return localStorage.getItem('user_security_code');
   }
 
+  /**
+   * will get the security code stored in locale storage.
+   */
+  get getNickname() {
+    return localStorage.getItem('user_nickname');
+  }
+
   /*********************
    * User related code *
    *********************/
@@ -184,7 +233,7 @@ export class WordpressService {
   login(username, password) {
     const options = this.getHttpOptions({
       login: username,
-      password: password
+      password: password,
     });
     return this.getUser(options);
   }
@@ -194,9 +243,13 @@ export class WordpressService {
    */
   logout() {
     localStorage.removeItem('user_id');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_first_name');
+    localStorage.removeItem('user_last_name');
     localStorage.removeItem('user_username');
     localStorage.removeItem('user_email');
     localStorage.removeItem('user_security_code');
+    localStorage.removeItem('user_nickname');
   }
 
   /**
@@ -215,7 +268,7 @@ export class WordpressService {
    */
   updateUSer(user: UserUpdate) {
     return this.http
-      .post<UserResponse>(userEndpoint + '/me', user, this.wpAuthPass)
+      .post<UserResponse>(profileEndpoint, user, this.wpAuthPass)
       .pipe(tap(data => this.savedInLocale(data)));
   }
 
@@ -237,17 +290,62 @@ export class WordpressService {
    *********************/
 
   /**
-   * will return all post.
-   */
-  getPosts() {
-    return this.http.get(postEndpoint);
-  }
-
-  /**
    * will return post data.
    * @param post data used in creating posts.
    */
   createPost(post: PostCreate) {
-    return this.http.post<any>(postEndpoint, post, this.wpAuthPass);
+    return this.http.post<any>(
+      postEndpoint + '?_embed=author',
+      post,
+      this.wpAuthPass,
+    );
   }
+
+  getPost() {}
+
+  /**
+   * will return 10 recent posts.
+   * @param param (optional) can give extra params in endpoint to modify response.
+   * @example _embed, orderby, per_page, page
+   */
+  getPosts(param?) {
+    if (!param) {
+      param = '';
+    }
+    return this.http.get(postEndpoint + param, {
+      observe: 'response',
+    });
+  }
+
+  updatePost() {}
+
+  deletePost() {}
+
+  /************************
+   * Comment related code *
+   ************************/
+
+  createComment() {}
+
+  getComment() {}
+
+  getComments() {}
+
+  updateComment() {}
+
+  deleteComment() {}
+
+  /*************************
+   * Category related code *
+   *************************/
+
+  createCategory() {}
+
+  getCategory() {}
+
+  getCategories() {}
+
+  updateCategory() {}
+
+  deleteCategory() {}
 }

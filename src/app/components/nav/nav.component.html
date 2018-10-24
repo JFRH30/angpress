@@ -1,21 +1,35 @@
 <nav mat-tab-nav-bar backgroundColor="primary" class="mat-elevation-z5">
+
   <div class="container d-flex">
+
+    <!-- links: home, forum -->
     <a mat-tab-link *ngFor="let menu of menus" [routerLink]="[ menu.path ]" routerLinkActive #navLink="routerLinkActive"
       [routerLinkActiveOptions]="{exact: true}" [active]="navLink.isActive"> {{ menu.name }} </a>
+
+    <!-- spacer -->
     <span class="spacer"></span>
+
+    <!-- menu for logged user: displayname, settings, logout -->
     <div class="d-inline-flex text-white" *ngIf="this.wp.isLogged; else logout">
-      <button mat-button> {{ username }} </button>
+      <button mat-button [routerLink]="['/profile']"> {{ displayName }} </button>
       <mat-menu #more="matMenu" overlapTrigger="false">
-        <button mat-menu-item [routerLink]="['./admin']"> Admin </button>
-        <button mat-menu-item (click)="this.wp.logout()"> Logout </button>
+        <button mat-menu-item [routerLink]="['/profile/settings']"> Settings </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="loggedOut()"> Logout </button>
       </mat-menu>
+
+      <!-- menu trigger -->
       <button mat-icon-button [matMenuTriggerFor]="more" class="align-self-center">
         <mat-icon>more_vert</mat-icon>
       </button>
     </div>
+
+    <!-- register, login -->
     <ng-template #logout>
-      <button mat-button class="text-white" [routerLink]="['/register']"> Register </button>
-      <button mat-button class="text-white" [routerLink]="['/login']"> Login </button>
+      <button mat-button class="text-white" [routerLink]="['/auth/register']"> Register </button>
+      <button mat-button class="text-white" [routerLink]="['/auth/login']"> Login </button>
     </ng-template>
+
   </div>
+
 </nav>

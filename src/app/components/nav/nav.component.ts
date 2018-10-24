@@ -1,21 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { WordpressService } from 'src/app/services/wordpress.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
 })
-export class NavComponent implements OnInit {
-  username;
-
+export class NavComponent implements DoCheck {
+  displayName;
   menus = [{ path: '/', name: 'Home' }, { path: '/forum', name: 'Forum' }];
 
-  constructor(public wp: WordpressService) {}
+  constructor(public wp: WordpressService, private route: Router) {}
 
-  ngOnInit() {
+  ngDoCheck() {
     if (this.wp.isLogged) {
-      this.username = this.wp.getUsername;
+      this.displayName = this.wp.getNickname;
     }
+  }
+
+  loggedOut() {
+    this.wp.logout();
+    this.route.navigate(['/']);
   }
 }

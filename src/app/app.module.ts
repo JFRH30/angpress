@@ -13,27 +13,18 @@ import {
   MatCardModule,
   MatInputModule,
   MatFormFieldModule,
+  MatPaginatorModule,
+  MatGridListModule,
+  MatListModule,
+  MatDividerModule,
+  MatProgressSpinnerModule,
 } from '@angular/material';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './pages/home/home.component';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NavComponent } from './components/nav/nav.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { ForumComponent } from './pages/forum/forum.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    PageNotFoundComponent,
-    NavComponent,
-    LoginComponent,
-    RegisterComponent,
-    ForumComponent,
-  ],
+  declarations: [AppComponent, NavComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -47,7 +38,11 @@ import { ForumComponent } from './pages/forum/forum.component';
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
-    CKEditorModule,
+    MatPaginatorModule,
+    MatGridListModule,
+    MatListModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
