@@ -1,35 +1,44 @@
-<nav mat-tab-nav-bar backgroundColor="primary" class="mat-elevation-z5">
+<mat-toolbar color="primary" class="mat-elevation-z6">
+  <button mat-icon-button (click)="onMenuClicked()">
+    <mat-icon> menu </mat-icon>
+  </button>
 
-  <div class="container d-flex">
+  <!-- DESKTOP -->
+  <button mat-button [routerLink]="['/']" class="d-none d-md-block"> Home </button>
+  <button mat-button [routerLink]="['/forum']" class="d-none d-md-block"> Forum </button>
+  <button mat-button [routerLink]="['/about']" class="d-none d-md-block"> About </button>
 
-    <!-- links: home, forum -->
-    <a mat-tab-link *ngFor="let menu of menus" [routerLink]="[ menu.path ]" routerLinkActive #navLink="routerLinkActive"
-      [routerLinkActiveOptions]="{exact: true}" [active]="navLink.isActive"> {{ menu.name }} </a>
+  <span class="spacer"></span>
 
-    <!-- spacer -->
-    <span class="spacer"></span>
+  <!-- *IF !LOGGED-->
+  <div *ngIf="!usersService.isLogged ; else authMenu">
 
-    <!-- menu for logged user: displayname, settings, logout -->
-    <div class="d-inline-flex text-white" *ngIf="this.wp.isLogged; else logout">
-      <button mat-button [routerLink]="['/profile']"> {{ displayName }} </button>
-      <mat-menu #more="matMenu" overlapTrigger="false">
-        <button mat-menu-item [routerLink]="['/profile/settings']"> Settings </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="loggedOut()"> Logout </button>
-      </mat-menu>
+    <button mat-button [routerLink]="['/register']" class="d-none d-md-inline-block"> Register </button>
+    <button mat-button [routerLink]="['/login']" class="d-none d-md-inline-block"> Login </button>
 
-      <!-- menu trigger -->
-      <button mat-icon-button [matMenuTriggerFor]="more" class="align-self-center">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-    </div>
-
-    <!-- register, login -->
-    <ng-template #logout>
-      <button mat-button class="text-white" [routerLink]="['/auth/register']"> Register </button>
-      <button mat-button class="text-white" [routerLink]="['/auth/login']"> Login </button>
-    </ng-template>
+    <button mat-icon-button [routerLink]="['/register']" class="d-md-none">
+      <mat-icon>person_add</mat-icon>
+    </button>
+    <button mat-icon-button [routerLink]="['/login']" class="d-md-none">
+      <mat-icon>fingerprint</mat-icon>
+    </button>
 
   </div>
 
-</nav>
+  <!-- *IF LOGGED -->
+  <ng-template #authMenu>
+
+    <button mat-button [routerLink]="['/profile']"> {{ usersService.getName }} </button>
+
+    <button mat-icon-button [matMenuTriggerFor]="menus">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menus>
+      <button mat-menu-item [routerLink]="['/profile/settings']"> Settings</button>
+      <button mat-menu-item (click)="onLoggedOut()"> Logout </button>
+    </mat-menu>
+
+  </ng-template>
+
+</mat-toolbar>

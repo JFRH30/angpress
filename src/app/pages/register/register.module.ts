@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/shared/material.module';
 
 // Component
-import { ForumComponent } from './forum.component';
+import { RegisterComponent } from './register.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -12,15 +13,12 @@ import { ForumComponent } from './forum.component';
     RouterModule.forChild([
       {
         path: '',
-        component: ForumComponent,
-      },
-      {
-        path: ':name',
-        component: ForumComponent,
+        component: RegisterComponent,
       },
     ]),
     MaterialModule,
+    FormsModule,
   ],
-  declarations: [ForumComponent],
+  declarations: [RegisterComponent],
 })
-export class ForumModule {}
+export class RegisterModule {}

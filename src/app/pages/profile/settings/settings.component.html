@@ -1,22 +1,112 @@
-<header class="pt-5 mat-typography">
-  <h1>Settings</h1>
-  <sub>This should display top posts top page showcase video</sub>
-</header>
-<main class="pt-5 mat-typography">
+<main class="container-fluid mt-3">
   <div class="row">
-    <div class="col-3 mb-5">
-      <mat-card>
+
+    <div class="col-md-4">
+
+      <!-- USER -->
+      <mat-card class="mb-3 mat-typography">
+
         <mat-card-header>
-          <mat-card-title>Settings</mat-card-title>
+          <img mat-card-avatar mat-card-md-image [src]="user.avatar_urls['96']" alt="">
+          <mat-card-title> {{ user.name | uppercase}} </mat-card-title>
+          <mat-card-subtitle> Username: {{ user.username }} </mat-card-subtitle>
+          <mat-card-subtitle> Role: {{ user.roles }} </mat-card-subtitle>
+          <mat-card-subtitle> Registered: {{ user.registered_date | date }} </mat-card-subtitle>
         </mat-card-header>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" [routerLink]="['/profile']"> Goto Profile </button>
+        </mat-card-actions>
+
+      </mat-card>
+
+    </div>
+
+    <div class="col-md-8">
+
+      <!-- USER INFORMATION -->
+      <mat-card class="mb-3 mat-typography">
+
+        <mat-card-header>
+          <mat-card-title> USER INFORMATION </mat-card-title>
+        </mat-card-header>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="pt-3">
+          <form (ngSubmit)="onUpdate(updateUser)" #updateUser="ngForm">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Display name</mat-label>
+              <input matInput type="text" name="name" [ngModel]="user.name">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>First name</mat-label>
+              <input matInput type="text" name="first_name" [ngModel]="user.first_name">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Last name</mat-label>
+              <input matInput type="text" name="last_name" [ngModel]="user.last_name">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" name="email" [ngModel]="user.email">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Website</mat-label>
+              <input matInput type="url" name="url" [ngModel]="user.url">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Tell about yourself</mat-label>
+              <textarea matInput name="description" rows="5" [ngModel]="user.description"></textarea>
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+            <mat-card-actions align="end" class="m-0 mt-3">
+              <button mat-raised-button color="primary" type="submit"> Update </button>
+            </mat-card-actions>
+
+          </form>
+        </mat-card-content>
+
+      </mat-card>
+
+      <!-- SECURITY -->
+      <mat-card class="mb-3 mat-typography">
+
+        <mat-card-header>
+          <mat-card-title> SECURITY </mat-card-title>
+        </mat-card-header>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="pt-3">
+          <form (ngSubmit)="onUpdate(updatePassword)" #updatePassword="ngForm">
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" name="password" ngModel>
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+            <mat-card-actions align="end" class="m-0 mt-3">
+              <button mat-raised-button color="primary" type="submit"> Update Password </button>
+            </mat-card-actions>
+
+          </form>
+        </mat-card-content>
+
       </mat-card>
     </div>
-    <div class="col-9 mb-5">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Options Title</mat-card-title>
-        </mat-card-header>
-      </mat-card>
-    </div>
+
   </div>
 </main>

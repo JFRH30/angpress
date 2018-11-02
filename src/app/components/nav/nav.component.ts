@@ -1,5 +1,5 @@
-import { Component, DoCheck } from '@angular/core';
-import { WordpressService } from 'src/app/services/wordpress.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { UsersService } from 'src/app/services/users.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,20 +7,26 @@ import { Router } from '@angular/router';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss'],
 })
-export class NavComponent implements DoCheck {
-  displayName;
-  menus = [{ path: '/', name: 'Home' }, { path: '/forum', name: 'Forum' }];
+export class NavComponent implements OnInit {
+  @Output()
+  menuClick = new EventEmitter<void>();
 
-  constructor(public wp: WordpressService, private route: Router) {}
+  constructor(public usersService: UsersService, public router: Router) {}
 
-  ngDoCheck() {
-    if (this.wp.isLogged) {
-      this.displayName = this.wp.getNickname;
-    }
+  ngOnInit() {}
+
+  /**
+   * will logout user.
+   */
+  onLoggedOut() {
+    this.usersService.logout();
+    this.router.navigate(['/']);
   }
 
-  loggedOut() {
-    this.wp.logout();
-    this.route.navigate(['/']);
+  /**
+   * fired whenever menu is clicked.
+   */
+  onMenuClicked() {
+    this.menuClick.emit();
   }
 }

@@ -5,44 +5,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRouting } from './app.routing';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  MatTabsModule,
-  MatMenuModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatInputModule,
-  MatFormFieldModule,
-  MatPaginatorModule,
-  MatGridListModule,
-  MatListModule,
-  MatDividerModule,
-  MatProgressSpinnerModule,
-} from '@angular/material';
+import { MaterialModule } from './shared/material.module';
 
+// Component
 import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent],
+  declarations: [AppComponent, NavComponent, SidenavComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     AppRouting,
-    MatTabsModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatPaginatorModule,
-    MatGridListModule,
-    MatListModule,
-    MatDividerModule,
-    MatProgressSpinnerModule,
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

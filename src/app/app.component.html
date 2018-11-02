@@ -1,4 +1,9 @@
-<app-nav></app-nav>
-<div class="container h-100">
-  <router-outlet></router-outlet>
-</div>
+<app-nav (menuClick)="sidenav.toggle()"></app-nav>
+<mat-sidenav-container class="h-100">
+  <mat-sidenav #sidenav mode="side" disableClose>
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

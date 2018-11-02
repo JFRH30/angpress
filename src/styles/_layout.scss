@@ -4,20 +4,27 @@ app-nav {
   right: 0;
   left: 0;
   z-index: 2;
+  mat-toolbar {
+    height: 56px !important;
+  }
 }
 
 app-root {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 48px;
+  top: 56px;
   right: 0;
   bottom: 0;
   left: 0;
 }
 
-app-root > .wrapper {
+mat-sidenav-container {
   overflow-y: auto;
+}
+
+mat-sidenav {
+  width: 200px;
 }
 
 .spacer {

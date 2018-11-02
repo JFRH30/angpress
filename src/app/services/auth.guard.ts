@@ -6,13 +6,13 @@ import {
   Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { WordpressService } from './wordpress.service';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private wp: WordpressService, private route: Router) {}
+  constructor(private usersService: UsersService, private route: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
   }
 
   checkUser() {
-    if (this.wp.isLogged) {
+    if (this.usersService.isLogged) {
       return true;
     }
     this.route.navigate(['/']);

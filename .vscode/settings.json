@@ -4,7 +4,7 @@
   "workbench.sideBar.location": "left",
   "window.zoomLevel": -1,
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Winter is Coming (Dark Blue)",
+  "workbench.colorTheme": "Winter is Coming (Dark)",
   "emmet.showSuggestionsAsSnippets": true,
   "emmet.triggerExpansionOnTab": true,
   "html.format.indentInnerHtml": true,

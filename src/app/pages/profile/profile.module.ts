@@ -1,27 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MaterialModule } from 'src/app/shared/material.module';
 import { FormsModule } from '@angular/forms';
-import {
-  MatCardModule,
-  MatListModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatProgressSpinnerModule,
-} from '@angular/material';
-import { ProfileRouting } from './profile.routing';
+
+// Component
 import { ProfileComponent } from './profile.component';
 import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    RouterModule.forChild([
+      {
+        path: '',
+        component: ProfileComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+      },
+      {
+        path: ':user',
+        component: ProfileComponent,
+      },
+    ]),
+    MaterialModule,
     FormsModule,
-    ProfileRouting,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    MatListModule,
-    MatProgressSpinnerModule,
   ],
   declarations: [ProfileComponent, SettingsComponent],
 })
