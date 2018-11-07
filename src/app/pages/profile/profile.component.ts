@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-// Service
-import { UsersService } from '../../services/users.service';
-import { CategoriesService } from 'src/app/services/categories.service';
-import { PostsService } from 'src/app/services/posts.service';
-import { MediaService } from 'src/app/services/media.service';
-
-// Interface
-import { ViewUserResponse } from 'src/app/models/users.model';
-import { CategoryResponse } from 'src/app/models/categories.model';
-import { ViewPostResponse, PostCreate } from 'src/app/models/posts.model';
-import { MediaResponse } from 'src/app/models/media.model';
+import { WordpressService } from 'src/app/services/wordpress.service';
+import {
+  ViewUserResponse,
+  CategoryResponse,
+  ViewPostResponse,
+  MediaResponse,
+  PostCreate,
+  USER_ENDPOINT,
+} from 'src/app/models/wordpress.model';
 
 @Component({
   selector: 'app-profile',
@@ -25,52 +22,53 @@ export class ProfileComponent implements OnInit {
   medias: MediaResponse[];
 
   constructor(
-    public usersService: UsersService,
-    private categoriesService: CategoriesService,
-    private postsService: PostsService,
-    private mediaService: MediaService,
     private activatedRoute: ActivatedRoute,
+    public wpService: WordpressService,
   ) {}
 
   ngOnInit() {
-    let user = this.activatedRoute.snapshot.paramMap.get('user');
     this.loadCategories();
-    if (!user) {
-      user = this.usersService.getID.toString();
+    let user = this.activatedRoute.snapshot.params['user'];
+    if (user == null) {
+      user = this.wpService.getID;
     }
     this.loadProfile(user);
-    this.loadMedias();
+    if (this.wpService.isLogged) {
+      this.loadMedias();
+    }
   }
 
   /**
    * this will load all categories.
    */
   loadCategories() {
-    this.categoriesService.getCategories().subscribe(data => {
+    this.wpService.getCategories().subscribe(data => {
       this.categories = <CategoryResponse[]>data;
     });
   }
 
   /**
-   * this will load all posts in specific category of user.
+   * this will load all posts of user in specific category.
    * @param id to reference category of posts collection.
    */
   loadPosts(id: number) {
+    this.posts = undefined;
+
     let user = this.activatedRoute.snapshot.paramMap.get('user');
 
     if (!user) {
-      user = this.usersService.getID.toString();
+      user = this.wpService.getID.toString();
     }
 
-    this.postsService
-      .getPosts('?categories=' + id + '&author=' + user)
-      .subscribe(data => {
-        if (data.body[0] == null) {
-          this.posts = [{ title: { raw: '', rendered: 'No posts here ..' } }];
-        } else {
-          this.posts = <ViewPostResponse[]>data.body;
-        }
-      });
+    const param = '?categories=' + id + '&author=' + user + '&_embed=author';
+
+    this.wpService.getPosts(param).subscribe(data => {
+      if (data.body[0] == null) {
+        this.posts = [{ title: { raw: '', rendered: 'No posts here ..' } }];
+      } else {
+        this.posts = <ViewPostResponse[]>data.body;
+      }
+    });
   }
 
   /**
@@ -78,7 +76,7 @@ export class ProfileComponent implements OnInit {
    * @param id to reference specific user.
    */
   loadProfile(id?: any) {
-    this.usersService.getProfile(id).subscribe(data => {
+    this.wpService.getProfile(id).subscribe(data => {
       console.log(data);
       this.user = <ViewUserResponse>data;
     });
@@ -89,7 +87,9 @@ export class ProfileComponent implements OnInit {
    * used for featured media.
    */
   loadMedias() {
-    this.mediaService.getMedias().subscribe(data => {
+    const param = '?author=' + this.wpService.getID;
+
+    this.wpService.getMedias(param).subscribe(data => {
       this.medias = <MediaResponse[]>data;
     });
   }
@@ -100,7 +100,14 @@ export class ProfileComponent implements OnInit {
    */
   onSubmitPost(form) {
     const post: PostCreate = form.value;
-    this.postsService.createPost(post).subscribe(data => {
+
+    if (!post.featured_media) {
+      post.featured_media = 0;
+    }
+
+    post.status = 'publish';
+
+    this.wpService.createPost(post).subscribe(data => {
       console.log(data);
       form.reset();
     });

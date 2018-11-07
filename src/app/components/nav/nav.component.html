@@ -11,7 +11,7 @@
   <span class="spacer"></span>
 
   <!-- *IF !LOGGED-->
-  <div *ngIf="!usersService.isLogged ; else authMenu">
+  <div *ngIf="!wpService.isLogged ; else authMenu">
 
     <button mat-button [routerLink]="['/register']" class="d-none d-md-inline-block"> Register </button>
     <button mat-button [routerLink]="['/login']" class="d-none d-md-inline-block"> Login </button>
@@ -28,7 +28,7 @@
   <!-- *IF LOGGED -->
   <ng-template #authMenu>
 
-    <button mat-button [routerLink]="['/profile']"> {{ usersService.getName }} </button>
+    <button mat-button [routerLink]="['/profile']"> {{ wpService.getName }} </button>
 
     <button mat-icon-button [matMenuTriggerFor]="menus">
       <mat-icon>more_vert</mat-icon>

@@ -1,0 +1,63 @@
+<main class="container">
+  <div class="row">
+
+    <div class="col-md-8">
+
+      <!-- SHOW POST -->
+      <mat-card class="my-3">
+
+        <ng-container *ngIf="post; else loader">
+
+          <mat-card-header *ngFor="let author of post._embedded.author">
+            <img mat-card-avatar [src]="author.avatar_urls['96']" alt="" [routerLink]="['/profile', author.id]">
+            <mat-card-title> {{ post.title.rendered }} </mat-card-title>
+            <mat-card-subtitle>
+              Posted by: {{ author.name }} Date: {{ post.date | date: 'mediumDate'}}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <img mat-card-image [src]="post._embedded['wp:featuredmedia'][0].source_url" alt="">
+
+          <mat-card-content [innerHtml]="post.content.rendered"></mat-card-content>
+
+        </ng-container>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-actions class="m-0 p-0">
+          <button mat-button> Comment </button>
+        </mat-card-actions>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-footer>
+
+          <mat-list dense>
+
+            <mat-list-item>
+              <img matListAvatar [src]="wpService.getAvatar['96']" alt="">
+
+              <form (ngSubmit)="onSubmitComment(createComment)" #createComment="ngForm" matLine>
+                <mat-form-field appearance="outline" id="commentBox">
+                  <input matInput type="text" name="content" ngModel placeholder="Leave comment here ...">
+                  <button matSuffix mat-icon-button type="submit">
+                    <mat-icon> send </mat-icon>
+                  </button>
+                </mat-form-field>
+              </form>
+
+            </mat-list-item>
+
+          </mat-list>
+        </mat-card-footer>
+
+      </mat-card>
+
+      <ng-template #loader>
+        <mat-spinner class="m-auto"></mat-spinner>
+      </ng-template>
+
+    </div>
+
+  </div>
+</main>

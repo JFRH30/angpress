@@ -1,4 +1,4 @@
-<main class="container-fluid mt-3">
+<main class="container mt-3">
   <div class="row">
 
     <div class="col-md-4">
@@ -21,6 +21,7 @@
         </mat-card-actions>
 
       </mat-card>
+      <!-- END USER -->
 
     </div>
 
@@ -35,6 +36,7 @@
 
         <mat-divider></mat-divider>
 
+        <!-- UPDATE USER INFORMATION -->
         <mat-card-content class="pt-3">
           <form (ngSubmit)="onUpdate(updateUser)" #updateUser="ngForm">
 
@@ -70,14 +72,16 @@
 
             <mat-divider></mat-divider>
 
-            <mat-card-actions align="end" class="m-0 mt-3">
+            <mat-card-actions align="end" class="m-0 mt-3 p-0">
               <button mat-raised-button color="primary" type="submit"> Update </button>
             </mat-card-actions>
 
           </form>
         </mat-card-content>
+        <!-- END UPDATE USER INFORMATION -->
 
       </mat-card>
+      <!-- END USER INFORMATION -->
 
       <!-- SECURITY -->
       <mat-card class="mb-3 mat-typography">
@@ -88,6 +92,7 @@
 
         <mat-divider></mat-divider>
 
+        <!-- CHANGE PASWORD -->
         <mat-card-content class="pt-3">
           <form (ngSubmit)="onUpdate(updatePassword)" #updatePassword="ngForm">
 
@@ -98,14 +103,17 @@
 
             <mat-divider></mat-divider>
 
-            <mat-card-actions align="end" class="m-0 mt-3">
+            <mat-card-actions align="end" class="m-0 mt-3 p-0">
               <button mat-raised-button color="primary" type="submit"> Update Password </button>
             </mat-card-actions>
 
           </form>
         </mat-card-content>
+        <!-- END CHANGE PASSWORD -->
 
       </mat-card>
+      <!-- END SECURITY -->
+
     </div>
 
   </div>

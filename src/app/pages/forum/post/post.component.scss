@@ -1,0 +1,10 @@
+#commentBox {
+  display: flex !important;
+  flex-direction: column;
+  .mat-form-field-wrapper {
+    padding: 0;
+    .mat-form-field-infix {
+      padding: 0.5em 0;
+    }
+  }
+}

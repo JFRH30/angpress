@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 // Component
 import { ProfileComponent } from './profile.component';
 import { SettingsComponent } from './settings/settings.component';
+import { AuthGuard } from 'src/app/services/auth.guard';
+import { MediaComponent } from './media/media.component';
 
 @NgModule({
   imports: [
@@ -14,6 +16,7 @@ import { SettingsComponent } from './settings/settings.component';
     RouterModule.forChild([
       {
         path: '',
+        canActivate: [AuthGuard],
         component: ProfileComponent,
       },
       {
@@ -28,6 +31,6 @@ import { SettingsComponent } from './settings/settings.component';
     MaterialModule,
     FormsModule,
   ],
-  declarations: [ProfileComponent, SettingsComponent],
+  declarations: [ProfileComponent, SettingsComponent, MediaComponent],
 })
 export class ProfileModule {}

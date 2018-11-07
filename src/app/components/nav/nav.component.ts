@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UsersService } from 'src/app/services/users.service';
 import { Router } from '@angular/router';
+import { WordpressService } from 'src/app/services/wordpress.service';
 
 @Component({
   selector: 'app-nav',
@@ -11,7 +11,7 @@ export class NavComponent implements OnInit {
   @Output()
   menuClick = new EventEmitter<void>();
 
-  constructor(public usersService: UsersService, public router: Router) {}
+  constructor(private router: Router, public wpService: WordpressService) {}
 
   ngOnInit() {}
 
@@ -19,7 +19,7 @@ export class NavComponent implements OnInit {
    * will logout user.
    */
   onLoggedOut() {
-    this.usersService.logout();
+    this.wpService.logout();
     this.router.navigate(['/']);
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoriesService } from 'src/app/services/categories.service';
-import { CategoryResponse } from 'src/app/models/categories.model';
+import { WordpressService } from 'src/app/services/wordpress.service';
+import { CategoryResponse } from 'src/app/models/wordpress.model';
 
 @Component({
   selector: 'app-sidenav',
@@ -10,14 +10,14 @@ import { CategoryResponse } from 'src/app/models/categories.model';
 export class SidenavComponent implements OnInit {
   categories: CategoryResponse[];
 
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(private wpService: WordpressService) {}
 
   ngOnInit() {
     this.loadCategories();
   }
 
   loadCategories() {
-    this.categoriesService
+    this.wpService
       .getCategories()
       .subscribe(data => (this.categories = <CategoryResponse[]>data));
   }

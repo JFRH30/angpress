@@ -1,4 +1,4 @@
-<main class="container-fluid mt-3">
+<main class="container mt-3">
   <div class="row">
 
     <div class="col-md-4">
@@ -13,33 +13,40 @@
             <mat-card-subtitle>{{ user.description }}</mat-card-subtitle>
           </mat-card-header>
 
-          <mat-divider *ngIf="user && user.id === usersService.getID"></mat-divider>
+          <mat-divider *ngIf="user && user.id === wpService.getID"></mat-divider>
 
-          <mat-card-actions *ngIf="user && user.id === usersService.getID" align=" end">
-            <button mat-raised-button [routerLink]="['/profile/settings']"> Settings </button>
+          <mat-card-actions *ngIf="user && user.id === wpService.getID" align=" end">
+            <button mat-raised-button color="primary" [routerLink]="['/profile/settings']"> Settings </button>
           </mat-card-actions>
 
         </ng-container>
       </mat-card>
+      <!-- END USER PROFILE -->
 
     </div>
 
     <div class="col-md-8">
 
       <!-- CREATE POST -->
-      <mat-card *ngIf="user && user.id === usersService.getID" class="mb-3 mat-typography">
+      <mat-card *ngIf="user && user.id === wpService.getID" class="mb-3 mat-typography">
 
+        <!-- HEADER -->
         <mat-card-header>
           <mat-card-title>Create Post</mat-card-title>
         </mat-card-header>
+        <!-- END HEADER -->
 
         <mat-divider></mat-divider>
 
+        <!-- CONTENT -->
         <mat-card-content class="pt-3">
+
+          <!-- POST FORM -->
           <form (ngSubmit)="onSubmitPost(createPost)" #createPost="ngForm">
 
             <div class="row">
 
+              <!-- MAIN POST FORM -->
               <div class="col-md-8">
 
                 <mat-form-field appearance="outline">
@@ -52,7 +59,9 @@
                 </mat-form-field>
 
               </div>
+              <!-- END MAIN POST FORM -->
 
+              <!-- POST OPTION -->
               <div class="col-md-4">
 
                 <mat-selection-list name="categories" ngModel>
@@ -74,45 +83,52 @@
                 </mat-form-field>
 
               </div>
+              <!-- END POST FORM -->
 
             </div>
-
             <mat-divider></mat-divider>
 
-            <mat-card-actions align="end" class="m-0 mt-3">
-              <button mat-raised-button type="submit"> Create Post </button>
+            <mat-card-actions align="end" class="m-0 mt-3 p-0">
+              <button mat-raised-button color="primary" type="submit"> Create Post </button>
             </mat-card-actions>
 
           </form>
+          <!-- END POST FORM -->
+
         </mat-card-content>
+        <!-- END CONTENT -->
 
       </mat-card>
+      <!-- END CREATE POST -->
+
 
       <!-- CATEGORIZED POSTS -->
-
       <mat-accordion>
-
         <mat-expansion-panel *ngFor="let category of categories" class="mb-3" (opened)="loadPosts(category.id)">
+
           <mat-expansion-panel-header>
             <mat-panel-title> {{ category.name }} </mat-panel-title>
           </mat-expansion-panel-header>
-
           <mat-divider></mat-divider>
 
           <ng-container *ngIf="posts ; else loader">
+
             <mat-list>
-              <mat-list-item *ngFor="let post of posts"> {{ post.title.rendered }}
+              <mat-list-item *ngFor="let post of posts">
+                <img mat-list-avatar mat-card-sm-image *ngIf="post._embedded" [src]="post._embedded['wp:featuredmedia'][0].source_url"
+                  alt="">
+                <p matLine> {{ post.title.rendered }} </p>
                 <mat-divider></mat-divider>
               </mat-list-item>
             </mat-list>
 
           </ng-container>
-
           <mat-divider></mat-divider>
 
-        </mat-expansion-panel>
 
+        </mat-expansion-panel>
       </mat-accordion>
+      <!-- END CATEGORIES POSTS -->
 
     </div>
 
