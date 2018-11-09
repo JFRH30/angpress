@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss'],
+  selector: 'app-post-list',
+  templateUrl: './post-list.component.html',
+  styleUrls: ['./post-list.component.scss'],
 })
-export class SidenavComponent implements OnInit {
+export class PostListComponent implements OnInit {
   constructor(public app: AppService) {}
 
   ngOnInit() {}

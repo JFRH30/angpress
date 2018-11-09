@@ -20,6 +20,8 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+
 @NgModule({
   imports: [
     MatButtonModule,
@@ -40,6 +42,7 @@ import {
     MatSlideToggleModule,
     MatTooltipModule,
     MatToolbarModule,
+    ScrollDispatchModule, // CDK
   ],
   exports: [
     MatButtonModule,
@@ -60,6 +63,7 @@ import {
     MatSlideToggleModule,
     MatToolbarModule,
     MatTooltipModule,
+    ScrollDispatchModule, // CDK
   ],
 })
 export class MaterialModule {}

@@ -1,37 +1,27 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { WordpressService } from 'src/app/services/wordpress.service';
-import { ViewCommentResponse } from 'src/app/models/wordpress.model';
+import { Component, OnInit, Input } from '@angular/core';
+import { AppService } from 'src/app/app.service';
+import { CommentCreate } from 'src/app/models/wordpress.model';
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class CommentComponent implements OnInit {
   @Input()
-  postID: number;
-  comments: ViewCommentResponse[];
-  children: ViewCommentResponse[];
+  postID;
 
-  constructor(private wpService: WordpressService) {}
+  constructor(public app: AppService) {}
 
-  ngOnInit() {
-    this.postID = 145;
-    this.loadComments();
-  }
+  ngOnInit() {}
 
-  loadComments(parentID?: number) {
-    if (!parentID) {
-      parentID = 0;
-    }
-    const param = '?post=' + this.postID + '&parent=' + parentID;
-    this.wpService.getComments(param).subscribe(data => {
-      if (parentID > 0) {
-        this.children = <ViewCommentResponse[]>data;
-      }
-      this.comments = <ViewCommentResponse[]>data;
-      console.log(data);
+  onSubmitComment(form) {
+    const comment: CommentCreate = form.value;
+    comment.post = this.postID;
+    comment.author = this.app.wp.getID;
+    this.app.wp.createComment(comment).subscribe(data => {
+      this.app.comments.push(data);
+      form.reset();
     });
   }
 }

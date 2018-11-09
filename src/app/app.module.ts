@@ -12,17 +12,13 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
+// Service
+import { AppService } from './app.service';
+
 @NgModule({
   declarations: [AppComponent, NavComponent, SidenavComponent],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    FormsModule,
-    AppRouting,
-    MaterialModule,
-  ],
-  providers: [],
+  imports: [BrowserModule, BrowserAnimationsModule, HttpClientModule, FormsModule, AppRouting, MaterialModule],
+  providers: [AppService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

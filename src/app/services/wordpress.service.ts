@@ -45,7 +45,6 @@ export class WordpressService {
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: 'Basic ' + btoa(`${options.login}:${options.password}`),
-        'Content-Type': 'application/json',
       }),
     };
     return httpOptions;
@@ -90,11 +89,7 @@ export class WordpressService {
    * note: this function can only be used by user in admin level.
    */
   updateCategory(id: number, category: CategoryUpdate) {
-    return this.http.post(
-      CATEGORY_ENDPOINT + '/' + id,
-      category,
-      this.wpAuthPass,
-    );
+    return this.http.post(CATEGORY_ENDPOINT + '/' + id, category, this.wpAuthPass);
   }
 
   /**
@@ -107,10 +102,7 @@ export class WordpressService {
     if (!force) {
       force = false;
     }
-    return this.http.delete(
-      CATEGORY_ENDPOINT + '/' + id + '?force=' + force,
-      this.wpAuthPass,
-    );
+    return this.http.delete(CATEGORY_ENDPOINT + '/' + id + '?force=' + force, this.wpAuthPass);
   }
 
   ////////////////////////
@@ -171,11 +163,7 @@ export class WordpressService {
    * @param comment data to update in existing comment on wordpress.
    */
   updateComment(id: number, comment: CommentUpdate) {
-    return this.http.post(
-      COMMENT_ENDPOINT + '/' + id,
-      comment,
-      this.wpAuthPass,
-    );
+    return this.http.post(COMMENT_ENDPOINT + '/' + id, comment, this.wpAuthPass);
   }
 
   /**
@@ -203,17 +191,8 @@ export class WordpressService {
    * will store and return media if successful.
    * @param media data to be stored in wordpress as media.
    */
-  createMedia(media: MediaCreate) {
-    const options = this.getHttpOptions({ file: media.file });
-    return this.http.post(MEDIA_ENDPOINT, media, options);
-  }
-
-  /**
-   * will return specific media if successful.
-   * @param id to reference specific media.
-   */
-  getMedia(id: number) {
-    return this.http.get(MEDIA_ENDPOINT + '/' + id);
+  createMedia(media) {
+    return this.http.post(MEDIA_ENDPOINT, media, this.wpAuthPass);
   }
 
   /**
@@ -244,10 +223,7 @@ export class WordpressService {
     if (!force) {
       force = false;
     }
-    return this.http.delete(
-      MEDIA_ENDPOINT + '/' + id + '?force=' + force,
-      this.wpAuthPass,
-    );
+    return this.http.delete(MEDIA_ENDPOINT + '/' + id + '?force=' + force, this.wpAuthPass);
   }
 
   /////////////////////
@@ -284,11 +260,7 @@ export class WordpressService {
    */
   updatePost(id: number, post: PostUpdate, param?: string) {
     const checkedParam = this.checkParams(param);
-    return this.http.post(
-      POST_ENDPOINT + '/' + id + checkedParam,
-      post,
-      this.wpAuthPass,
-    );
+    return this.http.post(POST_ENDPOINT + '/' + id + checkedParam, post, this.wpAuthPass);
   }
 
   /**
@@ -300,10 +272,7 @@ export class WordpressService {
     if (!force) {
       force = false;
     }
-    return this.http.delete(
-      POST_ENDPOINT + '/' + id + '?force=' + force,
-      this.wpAuthPass,
-    );
+    return this.http.delete(POST_ENDPOINT + '/' + id + '?force=' + force, this.wpAuthPass);
   }
 
   /////////////////////
@@ -335,9 +304,7 @@ export class WordpressService {
    * @param user data to be stored upon user registration.
    */
   register(user: UserCreate) {
-    return this.http
-      .post(USER_ENDPOINT, user)
-      .pipe(tap(data => this.savedInLocale('my', data)));
+    return this.http.post(USER_ENDPOINT, user).pipe(tap(data => this.savedInLocale('my', data)));
   }
 
   /**
@@ -362,9 +329,7 @@ export class WordpressService {
     if (!auth) {
       auth = this.wpAuthPass;
     }
-    return this.http
-      .get(USER_ENDPOINT + '/me' + checkedParam, auth)
-      .pipe(tap(data => this.savedInLocale('my', data)));
+    return this.http.get(USER_ENDPOINT + '/me' + checkedParam, auth).pipe(tap(data => this.savedInLocale('my', data)));
   }
 
   /**
@@ -396,17 +361,15 @@ export class WordpressService {
    */
   deleteUser(reassign: number, id?: number, force?: boolean) {
     let user;
-    if (id) {
+    if (!id) {
+      user = '/me';
+    } else {
       user = id;
     }
     if (!force) {
       force = false;
     }
-    user = '/me';
-    this.http.delete(
-      USER_ENDPOINT + user + '?force=' + force + '&reassign=' + reassign,
-      this.wpAuthPass,
-    );
+    this.http.delete(USER_ENDPOINT + user + '?force=' + force + '&reassign=' + reassign, this.wpAuthPass);
   }
 
   ////////////////////

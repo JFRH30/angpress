@@ -8,6 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { ForumComponent } from './forum.component';
 import { PostComponent } from './post/post.component';
 import { CommentComponent } from './comment/comment.component';
+import { QuickPostComponent } from './quick-post/quick-post.component';
+import { PostListComponent } from './post-list/post-list.component';
+import { ContributorComponent } from './contributor/contributor.component';
+import { CommentListComponent } from './comment-list/comment-list.component';
 
 @NgModule({
   imports: [
@@ -22,7 +26,7 @@ import { CommentComponent } from './comment/comment.component';
         component: CommentComponent,
       },
       {
-        path: ':name',
+        path: ':slug',
         component: ForumComponent,
       },
       {
@@ -33,6 +37,6 @@ import { CommentComponent } from './comment/comment.component';
     MaterialModule,
     FormsModule,
   ],
-  declarations: [ForumComponent, PostComponent, CommentComponent],
+  declarations: [ForumComponent, PostComponent, CommentComponent, QuickPostComponent, PostListComponent, ContributorComponent, CommentListComponent],
 })
 export class ForumModule {}

@@ -9,6 +9,8 @@ import { ProfileComponent } from './profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AuthGuard } from 'src/app/services/auth.guard';
 import { MediaComponent } from './media/media.component';
+import { CreatePostComponent } from './create-post/create-post.component';
+import { ListPostComponent } from './list-post/list-post.component';
 
 @NgModule({
   imports: [
@@ -24,13 +26,13 @@ import { MediaComponent } from './media/media.component';
         component: SettingsComponent,
       },
       {
-        path: ':user',
+        path: ':userID',
         component: ProfileComponent,
       },
     ]),
     MaterialModule,
     FormsModule,
   ],
-  declarations: [ProfileComponent, SettingsComponent, MediaComponent],
+  declarations: [ProfileComponent, SettingsComponent, MediaComponent, CreatePostComponent, ListPostComponent],
 })
 export class ProfileModule {}

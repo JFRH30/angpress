@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "angpress": "ng s -o --host angpress.sonub.com --port 8443 --disable-host-check --ssl --ssl-key ./tmp/ssl/sonub-private.key --ssl-cert ./tmp/ssl/sonub-certificate-ca-bundle.crt"
   },
   "private": true,
   "dependencies": {

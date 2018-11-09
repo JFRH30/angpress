@@ -2,7 +2,7 @@
 // REST API ENDPOINTS //
 ////////////////////////
 
-export const WORDPRESS_ENDPOINT = 'http://localhost:80/wordpress';
+export const WORDPRESS_ENDPOINT = 'https://angpress.sonub.com';
 export const REST_ENDPOINT = WORDPRESS_ENDPOINT + '/wp-json/wp/v2';
 export const CATEGORY_ENDPOINT = REST_ENDPOINT + '/categories';
 export const COMMENT_ENDPOINT = REST_ENDPOINT + '/comments';
@@ -13,8 +13,7 @@ export const USER_ENDPOINT = REST_ENDPOINT + '/users';
 /**
  * CUSTOM ENDPOINT
  */
-export const CUSTOM_ENDPOINT =
-  WORDPRESS_ENDPOINT + '/wp-json/custom/api/profile';
+export const CUSTOM_ENDPOINT = WORDPRESS_ENDPOINT + '/wp-json/custom/api/profile';
 
 ////////////////////////
 // CATEGORIES RELATED //
@@ -31,14 +30,7 @@ export interface CategoryList {
   exclude?: number[];
   include?: number[];
   order?: 'asc' | 'desc';
-  orderby?:
-    | 'id'
-    | 'include'
-    | 'name'
-    | 'slug'
-    | 'term_group'
-    | 'description'
-    | 'count';
+  orderby?: 'id' | 'include' | 'name' | 'slug' | 'term_group' | 'description' | 'count';
   hide_empty?: boolean;
   parent?: number;
   post?: number;
@@ -276,16 +268,7 @@ export interface MediaList {
   include?: number[];
   offset?: number[];
   order?: 'asc' | 'desc';
-  orderby?:
-    | 'author'
-    | 'date'
-    | 'id'
-    | 'include'
-    | 'modified'
-    | 'parent'
-    | 'relevance'
-    | 'slug'
-    | 'title';
+  orderby?: 'author' | 'date' | 'id' | 'include' | 'modified' | 'parent' | 'relevance' | 'slug' | 'title';
   parent?: number[];
   parent_exclude?: number;
   slug?: string;
@@ -298,7 +281,7 @@ export interface MediaList {
  * interface applied when creating new media.
  */
 export interface MediaCreate {
-  file: string;
+  file: Blob;
   date?: string;
   date_gmt?: string;
   slug?: number;
@@ -431,16 +414,7 @@ export interface PostList {
   include?: number[];
   offset?: number;
   order?: 'asc' | 'desc';
-  orderby?:
-    | 'author'
-    | 'date'
-    | 'id'
-    | 'include'
-    | 'modified'
-    | 'parent'
-    | 'relevance'
-    | 'slug'
-    | 'title';
+  orderby?: 'author' | 'date' | 'id' | 'include' | 'modified' | 'parent' | 'relevance' | 'slug' | 'title';
   slug?: string[];
   status?: 'publish' | 'future' | 'draft' | 'pending' | 'private';
   categories?: number | number[];
@@ -466,17 +440,7 @@ export interface PostCreate {
   featured_media?: number;
   comment_status?: 'open' | 'closed';
   ping_status?: 'open' | 'closed';
-  format?:
-    | 'standard'
-    | 'aside'
-    | 'chat'
-    | 'gallery'
-    | 'link'
-    | 'image'
-    | 'quote'
-    | 'status'
-    | 'video'
-    | 'audio';
+  format?: 'standard' | 'aside' | 'chat' | 'gallery' | 'link' | 'image' | 'quote' | 'status' | 'video' | 'audio';
   meta?: [];
   sticky?: boolean;
   template?: string;
@@ -510,17 +474,7 @@ export interface PostUpdate {
   featured_media?: number;
   comment_status?: 'open' | 'closed';
   ping_status?: 'open' | 'closed';
-  format?:
-    | 'standard'
-    | 'aside'
-    | 'chat'
-    | 'gallery'
-    | 'link'
-    | 'image'
-    | 'quote'
-    | 'status'
-    | 'video'
-    | 'audio';
+  format?: 'standard' | 'aside' | 'chat' | 'gallery' | 'link' | 'image' | 'quote' | 'status' | 'video' | 'audio';
   meta?: [];
   sticky?: boolean;
   template?: string;
@@ -641,14 +595,7 @@ export interface UserList {
   include?: number[];
   offset?: number;
   order?: 'asc' | 'desc';
-  orderby?:
-    | 'id'
-    | 'include'
-    | 'name'
-    | 'registered_date'
-    | 'slug'
-    | 'email'
-    | 'url';
+  orderby?: 'id' | 'include' | 'name' | 'registered_date' | 'slug' | 'email' | 'url';
   slug?: string[];
   roles?: string[];
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WordpressService } from 'src/app/services/wordpress.service';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-register',
@@ -8,7 +8,7 @@ import { WordpressService } from 'src/app/services/wordpress.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  constructor(private route: Router, private wpService: WordpressService) {}
+  constructor(private route: Router, private app: AppService) {}
 
   ngOnInit() {}
 
@@ -17,8 +17,9 @@ export class RegisterComponent implements OnInit {
    * @param form data used to register user.
    */
   onSubmit(form) {
-    this.wpService.register(form).subscribe(data => {
-      console.log(data);
+    this.app.wp.register(form.value).subscribe(data => {
+      const user = data;
+      alert('Successfully registered and logged as ' + user.name);
       this.route.navigate(['/']);
     });
   }

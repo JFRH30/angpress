@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WordpressService } from 'src/app/services/wordpress.service';
+import { AppService } from 'src/app/app.service';
+import { EditUserResponse } from 'src/app/models/wordpress.model';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,7 @@ import { WordpressService } from 'src/app/services/wordpress.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private route: Router, private wpService: WordpressService) {}
+  constructor(private route: Router, private app: AppService) {}
 
   ngOnInit() {
     this.checkLog();
@@ -19,7 +20,9 @@ export class LoginComponent implements OnInit {
    * @param form data to pass in the httpHeader to autheticate user.
    */
   onSubmit(form) {
-    this.wpService.login(form.username, form.password).subscribe(res => {
+    this.app.wp.login(form.value.username, form.value.password).subscribe(data => {
+      const user = <EditUserResponse>data;
+      alert('Successfully registered and logged as ' + user.name);
       this.route.navigate(['/']);
     });
   }
@@ -28,10 +31,8 @@ export class LoginComponent implements OnInit {
    * will check if there is user currently logged.
    */
   checkLog() {
-    if (this.wpService.isLogged) {
-      this.wpService
-        .getUser()
-        .subscribe(data => console.log(data), err => console.log(err));
+    if (this.app.isLoggedIn) {
+      this.app.wp.showUser().subscribe(data => console.log(data), err => console.log(err));
     }
   }
 }

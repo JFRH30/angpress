@@ -1,0 +1,25 @@
+<mat-card *ngFor="let post of app.posts" class="mb-3 mat-typography">
+
+  <mat-card-header *ngFor="let author of post._embedded.author">
+    <img mat-card-avatar [src]="author.avatar_urls['96']" alt="" [routerLink]="['/profile', post.author]">
+    <mat-card-title> {{ post.title.rendered }} </mat-card-title>
+    <mat-card-subtitle> Author: {{ author.name }} | Date: {{ post.date | date:'mediumDate' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <img mat-card-image *ngIf="post._embedded['wp:featuredmedia']" [src]="post._embedded['wp:featuredmedia'][0].source_url"
+    alt="">
+
+  <mat-card-content [innerHTML]="post.content.rendered.length > 300 ? post.content.rendered.substring(0, 300) + '...' : post.content.rendered "></mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button [routerLink]="['/forum/post', post.id]"> Read More </button>
+  </mat-card-actions>
+
+</mat-card>
+
+<mat-card *ngIf="!app.posts.length" class="mat-typopgraphy">
+  <mat-card-content>
+    <h1> No Posts here yet.. </h1>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,16 @@
+<mat-list>
+  <mat-list-item *ngFor="let comment of comments" id="comment-list" class="h-auto">
+    <img matListAvatar [src]="comment.author_avatar_urls['96']" alt="">
+    <mat-card matline class="ml-3">
+      <mat-card-subtitle> {{ comment.author_name }} Date: {{ comment.date | date }} </mat-card-subtitle>
+      <mat-card-content [innerHTML]="comment.content.rendered">
+      </mat-card-content>
+      <mat-card-actions class="m-0">
+        <a mat-button disableRipple (click)="loadComments(comment.id)"> Replies </a>
+        <a mat-button disableRipple> Edit </a>
+      </mat-card-actions>
+      <mat-card-footer>
+      </mat-card-footer>
+    </mat-card>
+  </mat-list-item>
+</mat-list>

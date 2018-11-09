@@ -1,0 +1,24 @@
+<!-- QUICK POST -->
+<mat-card *ngIf="app.isLoggedIn" class="mb-3">
+  <mat-card-content>
+    <form (ngSubmit)="onSubmitPost(postCreate)" #postCreate="ngForm">
+
+      <mat-form-field appearance="outline">
+        <mat-label> Title </mat-label>
+        <input matInput type="text" name="title" ngModel>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <textarea matInput name="content" rows="5" ngModel placeholder="Write something here ..."></textarea>
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions align="end" class="m-0 mt-3 p-0">
+        <button mat-raised-button color="primary" type="submit"> Post </button>
+      </mat-card-actions>
+
+    </form>
+  </mat-card-content>
+</mat-card>
+<!-- END QUICK POST -->
