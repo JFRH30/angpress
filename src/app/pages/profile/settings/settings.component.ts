@@ -1,21 +1,17 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { WordpressService } from 'src/app/services/wordpress.service';
 import { EditUserResponse } from 'src/app/models/wordpress.model';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
-export class SettingsComponent implements OnInit, OnChanges {
+export class SettingsComponent implements OnInit {
   user: EditUserResponse;
-  constructor(public wpService: WordpressService) {}
+  constructor(public app: AppService) {}
 
   ngOnInit() {
-    this.loadUser();
-  }
-
-  ngOnChanges() {
     this.loadUser();
   }
 
@@ -23,7 +19,7 @@ export class SettingsComponent implements OnInit, OnChanges {
    * will get all data form locale.
    */
   loadUser() {
-    this.user = this.wpService.getUserLocaleSave;
+    this.user = this.app.wp.getSaveLocale;
   }
 
   /**
@@ -31,7 +27,7 @@ export class SettingsComponent implements OnInit, OnChanges {
    * @param form data form #updateUser.
    */
   onUpdate(form) {
-    this.wpService.updateUser(form.value).subscribe(data => {
+    this.app.wp.updateUser(form.value, '/me').subscribe(data => {
       this.user = <EditUserResponse>data;
       if (form.value.password) {
         form.reset();

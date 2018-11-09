@@ -9,6 +9,7 @@ import { ViewUserResponse } from 'src/app/models/wordpress.model';
   styleUrls: ['./forum.component.scss'],
 })
 export class ForumComponent implements OnInit {
+  category = '';
   users: ViewUserResponse[];
 
   constructor(private activatedRoute: ActivatedRoute, public app: AppService) {}
@@ -19,12 +20,14 @@ export class ForumComponent implements OnInit {
   doLoadPosts() {
     this.activatedRoute.params.subscribe(params => {
       if (params['slug'] == null) {
+        this.category = 'All Posts';
         this.app.categoryID = null;
         this.app.loadPosts();
       }
       if (this.app.categories) {
         this.app.categories.filter(category => {
           if (category.slug === params['slug']) {
+            this.category = category.name;
             this.app.categoryID = category.id;
             this.app.loadPosts();
           }
@@ -32,13 +35,4 @@ export class ForumComponent implements OnInit {
       }
     });
   }
-
-  /**
-   * this will load all users who have posts or contributed.
-   */
-  // loadUsers() {
-  //   this.app.wp.showUser().subscribe(data => {
-  //     this.users = <ViewUserResponse[]>data;
-  //   });
-  // }
 }

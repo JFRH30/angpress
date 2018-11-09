@@ -22,9 +22,7 @@ export class CreatePostComponent implements OnInit {
     if (!post.featured_media) {
       post.featured_media = 0;
     }
-
     post.status = 'publish';
-
     this.app.wp.createPost(post).subscribe(data => {
       console.log(data);
       form.reset();
