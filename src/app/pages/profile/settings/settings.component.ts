@@ -31,6 +31,9 @@ export class SettingsComponent implements OnInit {
       this.user = <EditUserResponse>data;
       if (form.value.password) {
         form.reset();
+        alert('You have successfully updated your Password');
+      } else {
+        alert('You have successfully updated your Profile');
       }
     });
   }

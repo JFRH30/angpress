@@ -13,8 +13,7 @@
           <mat-card-subtitle> Role: {{ user.roles }} </mat-card-subtitle>
           <mat-card-subtitle> Registered: {{ user.registered_date | date }} </mat-card-subtitle>
         </mat-card-header>
-
-        <mat-divider></mat-divider>
+        <hr>
 
         <mat-card-actions align="end">
           <button mat-raised-button color="primary" [routerLink]="['/profile']"> Goto Profile </button>
@@ -33,8 +32,7 @@
         <mat-card-header>
           <mat-card-title> USER INFORMATION </mat-card-title>
         </mat-card-header>
-
-        <mat-divider></mat-divider>
+        <hr>
 
         <!-- UPDATE USER INFORMATION -->
         <mat-card-content class="pt-3">
@@ -69,8 +67,7 @@
               <mat-label>Tell about yourself</mat-label>
               <textarea matInput name="description" rows="5" [ngModel]="user.description"></textarea>
             </mat-form-field>
-
-            <mat-divider></mat-divider>
+            <hr>
 
             <mat-card-actions align="end" class="m-0 mt-3 p-0">
               <button mat-raised-button color="primary" type="submit"> Update </button>
@@ -89,8 +86,7 @@
         <mat-card-header>
           <mat-card-title> SECURITY </mat-card-title>
         </mat-card-header>
-
-        <mat-divider></mat-divider>
+        <hr>
 
         <!-- CHANGE PASWORD -->
         <mat-card-content class="pt-3">
@@ -100,8 +96,7 @@
               <mat-label>Password</mat-label>
               <input matInput type="password" name="password" ngModel>
             </mat-form-field>
-
-            <mat-divider></mat-divider>
+            <hr>
 
             <mat-card-actions align="end" class="m-0 mt-3 p-0">
               <button mat-raised-button color="primary" type="submit"> Update Password </button>

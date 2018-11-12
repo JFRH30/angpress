@@ -1,4 +1,4 @@
-<main class="container mt-3">
+<main class="container mt-3 mat-typography">
   <div class="row">
 
     <div class="col-md-4">
@@ -11,23 +11,26 @@
             <mat-card-subtitle>{{ user.description }}</mat-card-subtitle>
           </mat-card-header>
 
-          <mat-divider *ngIf="app.isLoggedIn"></mat-divider>
-
-          <mat-card-actions *ngIf="app.isLoggedIn" align=" end">
+          <mat-card-actions *ngIf="app.isLoggedIn && user.id === app.wp.getID" align=" end">
             <button mat-raised-button color="primary" [routerLink]="['/profile/settings']"> Settings </button>
           </mat-card-actions>
         </ng-container>
       </mat-card>
 
       <!-- Media -->
-      <app-media></app-media>
+
+      <ng-container *ngIf="user">
+        <create-media-component *ngIf="app.isLoggedIn && user.id === app.wp.getID"></create-media-component>
+      </ng-container>
     </div>
 
     <div class="col-md-8">
       <!-- Create Post -->
-      <app-create-post></app-create-post>
+      <ng-container *ngIf="user">
+        <create-post-component *ngIf="app.isLoggedIn && user.id === app.wp.getID"></create-post-component>
+      </ng-container>
       <!-- List Post -->
-      <app-list-post></app-list-post>
+      <list-post-component></list-post-component>
     </div>
 
   </div>

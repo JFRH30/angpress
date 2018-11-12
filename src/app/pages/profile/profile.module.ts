@@ -1,20 +1,32 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MaterialModule } from 'src/app/shared/material.module';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatProgressSpinnerModule,
+  MatFormFieldModule,
+  MatInputModule,
+} from '@angular/material';
 
 // Component
 import { ProfileComponent } from './profile.component';
-import { SettingsComponent } from './settings/settings.component';
+
+// Guard
 import { AuthGuard } from 'src/app/services/auth.guard';
-import { MediaComponent } from './media/media.component';
-import { CreatePostComponent } from './create-post/create-post.component';
-import { ListPostComponent } from './list-post/list-post.component';
+
+// Featured Module
+import { CreatePostModule } from 'src/app/shared/components/create-post/create-post.module';
+import { ListPostModule } from 'src/app/shared/components/list-post/list-post.module';
+import { CreateMediaModule } from 'src/app/shared/components/create-media/create-media.module';
 
 @NgModule({
+  declarations: [ProfileComponent],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild([
       {
         path: '',
@@ -23,16 +35,21 @@ import { ListPostComponent } from './list-post/list-post.component';
       },
       {
         path: 'settings',
-        component: SettingsComponent,
+        loadChildren: './settings/settings.module#SettingsModule',
       },
       {
         path: ':userID',
         component: ProfileComponent,
       },
     ]),
-    MaterialModule,
-    FormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    CreatePostModule,
+    ListPostModule,
+    CreateMediaModule,
   ],
-  declarations: [ProfileComponent, SettingsComponent, MediaComponent, CreatePostComponent, ListPostComponent],
 })
 export class ProfileModule {}

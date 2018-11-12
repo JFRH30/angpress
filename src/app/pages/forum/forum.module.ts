@@ -1,42 +1,41 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MaterialModule } from 'src/app/shared/material.module';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+import { MatProgressSpinnerModule } from '@angular/material';
 
 // Component
 import { ForumComponent } from './forum.component';
-import { PostComponent } from './post/post.component';
-import { CommentComponent } from './comment/comment.component';
-import { QuickPostComponent } from './quick-post/quick-post.component';
-import { PostListComponent } from './post-list/post-list.component';
-import { ContributorComponent } from './contributor/contributor.component';
-import { CommentListComponent } from './comment-list/comment-list.component';
+
+// Featured Module
+import { CreatePostModule } from 'src/app/shared/components/create-post/create-post.module';
+import { ListPostModule } from 'src/app/shared/components/list-post/list-post.module';
+import { ContributorModule } from 'src/app/shared/components/contributor/contributor.module';
 
 @NgModule({
+  declarations: [ForumComponent],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild([
       {
         path: '',
         component: ForumComponent,
       },
       {
-        path: 'test',
-        component: CommentComponent,
-      },
-      {
         path: ':slug',
         component: ForumComponent,
       },
       {
-        path: 'post/:id',
-        component: PostComponent,
+        path: 'post',
+        loadChildren: './post/post.module#PostModule',
       },
     ]),
-    MaterialModule,
-    FormsModule,
+    MatProgressSpinnerModule,
+    CreatePostModule,
+    ListPostModule,
+    ContributorModule,
   ],
-  declarations: [ForumComponent, PostComponent, CommentComponent, QuickPostComponent, PostListComponent, ContributorComponent, CommentListComponent],
 })
 export class ForumModule {}

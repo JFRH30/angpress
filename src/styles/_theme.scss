@@ -5,6 +5,6 @@
 $theme-primary: mat-palette($mat-purple);
 $theme-accent: mat-palette($mat-deep-purple);
 
-$theme: mat-light-theme($theme-primary, $theme-accent);
+$theme: mat-dark-theme($theme-primary, $theme-accent);
 
 @include angular-material-theme($theme);

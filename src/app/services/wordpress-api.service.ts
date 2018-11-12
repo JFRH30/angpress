@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 // import { CookieService, CookieOptions } from 'ngx-cookie';
 import {
   CategoryCreate,
@@ -18,6 +18,7 @@ import {
   MEDIA_ENDPOINT,
   POST_ENDPOINT,
   USER_ENDPOINT,
+  ViewPostResponse,
 } from '../models/wordpress.model';
 import { tap } from 'rxjs/operators';
 
@@ -286,7 +287,7 @@ export class WordpressApiService {
    */
   createPost(post: PostCreate, param?: string) {
     const validParam = this.checkParam(param);
-    return this.http.post(POST_ENDPOINT + validParam, post, this.getWPPass);
+    return this.http.post<ViewPostResponse>(POST_ENDPOINT + validParam, post, this.getWPPass);
   }
 
   /**
@@ -306,7 +307,7 @@ export class WordpressApiService {
    * @param param (optional) parameter for wordpress api.
    * @description for register user only and owner only.
    */
-  updatePost(id: number, post: PostUpdate, param?: string) {
+  updatePost(id: number, post, param?: string) {
     const validParam = this.checkParam(param);
     return this.http.post(POST_ENDPOINT + '/' + id + validParam, post, this.getWPPass);
   }
@@ -347,8 +348,11 @@ export class WordpressApiService {
    */
   showProfile(id?: number, param?: string, auth?: any) {
     const validParam = this.checkParam(param);
-    if (!auth && id) {
+    if (!auth && id !== this.getID) {
       return this.http.get(USER_ENDPOINT + '/' + id + validParam, { observe: 'body' });
+    }
+    if (!auth && id === this.getID) {
+      return this.http.get(USER_ENDPOINT + '/me' + validParam, this.getWPPass);
     }
     return this.http.get(USER_ENDPOINT + validParam, auth);
   }

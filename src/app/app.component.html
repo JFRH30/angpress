@@ -1,7 +1,7 @@
-<app-nav (menuClick)="sidenav.toggle()"></app-nav>
+<nav-component (menuClick)="sidenav.toggle()"></nav-component>
 <mat-sidenav-container class="h-100">
   <mat-sidenav #sidenav mode="over">
-    <app-sidenav></app-sidenav>
+    <sidenav-component></sidenav-component>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>

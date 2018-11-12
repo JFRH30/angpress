@@ -4,7 +4,7 @@ import { AppService } from 'src/app/app.service';
 import { EditUserResponse } from 'src/app/models/wordpress.model';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login-page',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -20,11 +20,16 @@ export class LoginComponent implements OnInit {
    * @param form data to pass in the httpHeader to autheticate user.
    */
   onSubmit(form) {
-    this.app.wp.login(form.value.username, form.value.password).subscribe(data => {
-      const user = <EditUserResponse>data;
-      alert('Successfully registered and logged as ' + user.name);
-      this.route.navigate(['/']);
-    });
+    this.app.wp.login(form.value.username, form.value.password).subscribe(
+      data => {
+        const user = <EditUserResponse>data;
+        alert('Successfully registered and logged as ' + user.name);
+        this.route.navigate(['/']);
+      },
+      err => {
+        alert('Login error : ' + err.error.code);
+      },
+    );
   }
 
   /**

@@ -2,25 +2,20 @@
   <h1> {{ category | uppercase }} </h1>
 </header>
 
-<main class="container">
+<main class="container mat-typography">
   <div class="row ">
 
     <div class="col-md-8">
       <!-- Quick Post -->
-      <app-quick-post *ngIf="app.isLoggedIn"></app-quick-post>
+      <create-post-component *ngIf="app.isLoggedIn"></create-post-component>
       <!-- 10 Recent Post  -->
-      <app-post-list *ngIf="app.posts; else loader"></app-post-list>
+      <list-post-component></list-post-component>
     </div>
 
     <div class="d-none d-md-block col-md-4">
       <!-- Contributors -->
-      <app-contributor></app-contributor>
+      <contributor-component></contributor-component>
     </div>
 
   </div>
 </main>
-
-<!-- Spinner -->
-<ng-template #loader>
-  <mat-spinner class="m-auto"></mat-spinner>
-</ng-template>

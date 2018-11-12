@@ -3,46 +3,5 @@
 </header>
 
 <main class="container mat-typography">
-  <div class="row">
-
-    <!-- CATEGORIES -->
-    <ng-container *ngFor="let category of categories">
-      <div class="col-md-12">
-        <mat-toolbar color="primary"> {{ category.name }} </mat-toolbar>
-        <hr>
-      </div>
-
-      <!-- RECENT POSTS -->
-      <ng-container *ngIf="category.posts; else loader">
-        <div class="col-md-4 my-3" *ngFor="let post of category.posts">
-          <mat-card>
-
-            <img mat-card-image [src]="post._embedded['wp:featuredmedia'][0].source_url" alt="">
-
-            <mat-card-header *ngFor="let author of post._embedded.author">
-              <img mat-card-avatar [src]="author.avatar_urls['96']" alt="" [routerLink]="['/profile', author.id]">
-              <mat-card-title> {{ post.title.rendered }} </mat-card-title>
-              <mat-card-subtitle> Posted by: {{ author.name }} </mat-card-subtitle>
-            </mat-card-header>
-
-            <mat-divider></mat-divider>
-
-            <mat-card-actions>
-              <button mat-button [routerLink]="['/forum/post', post.id]"> Read More </button>
-            </mat-card-actions>
-
-          </mat-card>
-        </div>
-      </ng-container>
-      <!-- END RECENT POSTS -->
-
-    </ng-container>
-    <!-- END CATERORY -->
-
-  </div>
-
-  <!-- SPINNER -->
-  <ng-template #loader>
-    <mat-spinner class="m-auto"></mat-spinner>
-  </ng-template>
+  <list-post-component></list-post-component>
 </main>

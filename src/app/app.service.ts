@@ -7,6 +7,7 @@ import {
   ViewUserResponse,
   ViewCommentResponse,
 } from './models/wordpress.model';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AppService {
@@ -19,7 +20,12 @@ export class AppService {
   profilePosts: ViewPostResponse[] = null; // for profile posts.
   contributors: ViewUserResponse[] | any[] = null; // for contributor component.
 
-  constructor(public wp: WordpressApiService) {
+  // Pagination
+  length: number = null;
+  pageSize = 10;
+  pageIndex = 0;
+
+  constructor(public router: Router, public wp: WordpressApiService) {
     this.doInit();
   }
 
@@ -45,15 +51,25 @@ export class AppService {
     return !this.isLoggedIn;
   }
 
+  get isForum() {
+    return window.location.pathname.split('/')[1] === 'forum';
+  }
+
   /**
    * will get categories from wordpress and store in categories.
    */
   loadCategories() {
     this.wp.showCategory().subscribe(data => {
       this.categories = <CategoryResponse[]>data.body;
+      if (this.isForum) {
+        this.router.navigate(['/forum']);
+      }
     });
   }
 
+  /**
+   * load contributors for forum.
+   */
   loadContributors() {
     this.wp.showUser().subscribe(data => {
       this.contributors = <ViewUserResponse[]>data.body;
@@ -63,16 +79,21 @@ export class AppService {
   /**
    * will get posts in specific category if category is not null,
    * else it will return posts regardless of their category(s).
+   * @param param (optional) for pagination for now.
    */
-  loadPosts() {
-    let param = '';
+  loadPosts(param?: string) {
+    param ? (param += '&') : (param = '?');
     if (this.categoryID) {
-      param = '?categories=' + this.categoryID + '&_embed';
-    } else {
-      param = '?_embed';
+      param += 'categories=' + this.categoryID + '&';
     }
+    if (this.profileID) {
+      param += 'author=' + this.profileID + '&';
+    }
+    param += '_embed';
     this.wp.showPost(param).subscribe(data => {
+      this.length = parseInt(data.headers.get('X-WP-Total'), 10);
       this.posts = <ViewPostResponse[]>data.body;
+      console.log('posts' + param);
     });
   }
 }

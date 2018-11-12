@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from 'src/app/shared/material.module';
 
 // Component
 import { HomeComponent } from './home.component';
 
+// Featured Module
+import { ListPostModule } from 'src/app/shared/components/list-post/list-post.module';
+
 @NgModule({
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -15,8 +18,7 @@ import { HomeComponent } from './home.component';
         component: HomeComponent,
       },
     ]),
-    MaterialModule,
+    ListPostModule,
   ],
-  declarations: [HomeComponent],
 })
 export class HomeModule {}

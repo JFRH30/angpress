@@ -1,0 +1,13 @@
+<mat-list dense>
+  <mat-list-item>
+    <img matListAvatar [src]="app.wp.getAvatar['96']" alt="">
+    <form (ngSubmit)="onSubmitComment(createComment)" #createComment="ngForm" matLine>
+      <mat-form-field appearance="outline" id="commentBox">
+        <input matInput type="text" name="content" ngModel placeholder="Leave comment here ...">
+        <button matSuffix mat-icon-button type="submit">
+          <mat-icon> send </mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </mat-list-item>
+</mat-list>

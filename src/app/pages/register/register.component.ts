@@ -17,10 +17,15 @@ export class RegisterComponent implements OnInit {
    * @param form data used to register user.
    */
   onSubmit(form) {
-    this.app.wp.register(form.value).subscribe(data => {
-      const user = data;
-      alert('Successfully registered and logged as ' + user.name);
-      this.route.navigate(['/']);
-    });
+    this.app.wp.register(form.value).subscribe(
+      data => {
+        const user = data;
+        alert('Successfully registered and logged as ' + user.name);
+        this.route.navigate(['/']);
+      },
+      err => {
+        alert('Register error : ' + err.error.code);
+      },
+    );
   }
 }

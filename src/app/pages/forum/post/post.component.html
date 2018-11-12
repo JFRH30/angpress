@@ -15,20 +15,29 @@
           </mat-card-header>
           <img mat-card-image [src]="post._embedded['wp:featuredmedia'][0].source_url" alt="">
           <mat-card-content [innerHtml]="post.content.rendered"></mat-card-content>
+          <mat-divider></mat-divider>
+
+          <mat-card-actions class="m-0 p-0">
+            <button mat-button (click)="showComment = !showComment"> Comment </button>
+            <button mat-button *ngIf="post.author === app.wp.getID" (click)="editPost = !editPost"> Edit </button>
+            <button mat-button *ngIf="post.author === app.wp.getID" (click)="onDeletePost(post.id)"> Delete </button>
+          </mat-card-actions>
+          <mat-divider></mat-divider>
+
+          <mat-card-footer>
+            <!-- Comment -->
+            <create-comment-component *ngIf="app.isLoggedIn && showComment" [postID]="post.id"></create-comment-component>
+            <mat-divider></mat-divider>
+            <!-- List Comment -->
+            <list-comment-component *ngIf="showComment" [postID]="post.id"></list-comment-component>
+          </mat-card-footer>
         </ng-container>
-        <mat-divider></mat-divider>
-
-        <mat-card-actions class="m-0 p-0">
-          <button mat-button> Comment </button>
-        </mat-card-actions>
-        <mat-divider></mat-divider>
-
-        <mat-card-footer>
-          <!-- Comment -->
-          <app-comment [postID]="post.id"></app-comment>
-        </mat-card-footer>
 
       </mat-card>
+    </div>
+
+    <div class="col-md-4 pt-3">
+      <edit-post-component *ngIf="editPost" [(editPost)]="post"></edit-post-component>
     </div>
 
   </div>
