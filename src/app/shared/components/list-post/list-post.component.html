@@ -22,7 +22,7 @@
   </mat-card>
 
   <mat-paginator [length]="app.length" [pageIndex]="app.pageIndex" [pageSize]="app.pageSize" [pageSizeOptions]="[5,10,20,50,100]"
-    (page)="paginate($event)"></mat-paginator>
+    (page)="paginate($event)" #paginator></mat-paginator>
 
 </ng-container>
 

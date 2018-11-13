@@ -25,10 +25,10 @@
         </mat-list-option>
       </mat-selection-list> <br>
 
-      <h3> Featured Image </h3>
+      <h3 *ngIf="app?.profileMedia?.length"> Featured Image </h3>
 
-      <mat-form-field appeareance="outline">
-        <mat-select name="featured_media" [(ngModel)]="editPost.featured_media" never placeholder="No Media Yet">
+      <mat-form-field *ngIf="app?.profileMedia?.length" appeareance="outline">
+        <mat-select name="featured_media" [(ngModel)]="editPost.featured_media" placeholder="No Media Yet">
           <mat-option *ngFor="let media of app.profileMedia" [value]="media.id">
             {{ media.title.rendered }}
           </mat-option>

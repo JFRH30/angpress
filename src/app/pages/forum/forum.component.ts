@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
-import { ViewUserResponse } from 'src/app/models/wordpress.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'forum-page',
@@ -10,9 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ForumComponent implements OnInit {
   category = null;
-  users: ViewUserResponse[];
 
-  constructor(private activatedRoute: ActivatedRoute, public app: AppService) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, public app: AppService) {}
 
   ngOnInit() {
     this.doLoadCategoryPosts();
@@ -33,7 +31,7 @@ export class ForumComponent implements OnInit {
           }
         });
       }
-      this.app.pageIndex = 0;
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false; // this reload the route logically speaking.
       this.app.loadPosts();
     });
   }

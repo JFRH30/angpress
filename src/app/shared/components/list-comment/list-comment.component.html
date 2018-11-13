@@ -1,31 +1,113 @@
 <mat-list *ngIf="postID">
   <mat-list-item *ngFor="let comment of app.comments; index as i" id="comment-list" class="h-auto">
-    <img matListAvatar [src]="comment.author_avatar_urls['96']" alt="">
+    <img matListAvatar [src]="comment.author_avatar_urls['96']" alt="" />
     <mat-card matline class="ml-3">
-      <mat-card-subtitle> {{ comment.author_name }} Date: {{ comment.date | date:'medium' }} </mat-card-subtitle>
-      <mat-card-content *ngIf="comment.id !== commentID" [innerHTML]="comment.content.rendered">
-      </mat-card-content>
+      <mat-card-subtitle> {{ comment.author_name }} Date: {{ comment.date | date: 'medium' }} </mat-card-subtitle>
+      <mat-card-content *ngIf="comment.id !== commentID" [innerHTML]="comment.content.rendered"> </mat-card-content>
 
-      <form *ngIf="showEditComment && comment.id === commentID" (ngSubmit)="onUpdateComment(updateComment, i)"
-        #updateComment="ngForm" matLine>
+      <form
+        *ngIf="showEditComment && comment.id === commentID"
+        matLine
+        (ngSubmit)="onUpdateComment(updateComment, i)"
+        #updateComment="ngForm"
+      >
         <mat-form-field appearance="outline" id="commentBox">
-          <input matInput type="text" name="content" [(ngModel)]="app.comments[i].content.rendered.split('<')[1].split('>')[1]">
-          <button matSuffix mat-icon-button type="submit">
-            <mat-icon> send </mat-icon>
-          </button>
+          <input
+            matInput
+            type="text"
+            name="content"
+            [(ngModel)]="app.comments[i].content.rendered.split('<')[1].split('>')[1]"
+          />
+          <button matSuffix mat-icon-button type="submit"><mat-icon> send </mat-icon></button>
         </mat-form-field>
       </form>
 
       <mat-card-actions class="m-0">
-        <!-- <a mat-button disableRipple (click)="loadComments(comment.id)" class="p-0 m-0"> Replies </a> -->
-        <a mat-button disableRipple *ngIf="comment.author === app.wp.getID" (click)="showEditComment = !showEditComment && commentID === null?  commentID = comment.id : commentID = null">
-          Edit </a>
-        <a mat-button disableRipple *ngIf="comment.author === app.wp.getID" (click)="onDeleteComment(comment.id, i)">
+        <a
+          mat-button
+          disableRipple
+          class="p-0 m-0"
+          (click)="
+            showReply =
+              !showReply && commentReplyID !== comment.id
+                ? (commentReplyID = comment.id)
+                : (commentReplyID = comment.id);
+            loadComments()
+          "
+        >
+          Reply
+        </a>
+        <a
+          *ngIf="comment.author === app.wp.getID"
+          mat-button
+          disableRipple
+          (click)="
+            showEditComment =
+              !showEditComment && commentID !== comment.id ? (commentID = comment.id) : (commentID = comment.id)
+          "
+        >
+          Edit
+        </a>
+        <a *ngIf="comment.author === app.wp.getID" mat-button disableRipple (click)="onDeleteComment(comment.id, i)">
           Delete
         </a>
       </mat-card-actions>
       <mat-card-footer>
+        <ng-container *ngIf="showReply && commentReplyID === comment.id">
+          <ng-container *ngIf="!app.commentReply; else: replies"></ng-container>
+          <create-comment-component
+            *ngIf="comment.id === commentReplyID"
+            [postID]="comment.post"
+            [parentID]="comment.id"
+          ></create-comment-component>
+        </ng-container>
       </mat-card-footer>
     </mat-card>
   </mat-list-item>
 </mat-list>
+
+<!-- Reply -->
+<ng-template #replies>
+  <mat-list *ngIf="app?.commentReply">
+    <mat-list-item *ngFor="let reply of app.commentReply[commentReplyID]; index as i" id="comment-list" class="h-auto">
+      <img matListAvatar [src]="reply.author_avatar_urls['96']" alt="" />
+      <mat-card matline class="ml-3">
+        <mat-card-subtitle> {{ reply.author_name }} Date: {{ reply.date | date: 'medium' }} </mat-card-subtitle>
+        <mat-card-content *ngIf="reply.id !== commentID" [innerHTML]="reply.content.rendered"> </mat-card-content>
+
+        <form
+          *ngIf="showEditComment && reply.id === commentID"
+          matLine
+          (ngSubmit)="onUpdateComment(updateComment, i)"
+          #updateComment="ngForm"
+        >
+          <mat-form-field appearance="outline" id="commentBox">
+            <input
+              matInput
+              type="text"
+              name="content"
+              [(ngModel)]="app.commentReply[commentReplyID][i].content.rendered.split('<')[1].split('>')[1]"
+            />
+            <button matSuffix mat-icon-button type="submit"><mat-icon> send </mat-icon></button>
+          </mat-form-field>
+        </form>
+
+        <mat-card-actions class="m-0">
+          <a
+            *ngIf="reply.author === app.wp.getID"
+            mat-button
+            disableRipple
+            (click)="
+              showEditComment = !showEditComment && commentID !== reply.id ? (commentID = reply.id) : (commentID = null)
+            "
+          >
+            Edit
+          </a>
+          <a *ngIf="reply.author === app.wp.getID" mat-button disableRipple (click)="onDeleteComment(reply.id, i)">
+            Delete
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    </mat-list-item>
+  </mat-list>
+</ng-template>

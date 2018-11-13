@@ -201,6 +201,8 @@ export interface ViewCommentResponse {
   date_gmt?: string;
   content?: { rendered?: string };
   children?: ViewCommentResponse[]; // added by me
+  edit?: boolean; // added by me
+  show?: boolean; // added by me
   link?: string;
   status?: string;
   type?: string;

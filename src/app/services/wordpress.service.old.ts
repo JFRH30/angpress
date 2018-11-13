@@ -127,7 +127,7 @@ export class WordpressService {
     const checkedParam = this.checkParams(param);
     return this.http.get(COMMENT_ENDPOINT + checkedParam);
 
-    // this is if every you fetch everything and rearrange it HAHAHAHA.
+    // this is if ever you fetch everything and rearrange it HAHAHAHA.
     // .pipe(
     //   tap(data => {
     //     (<ViewCommentResponse[]>data).forEach(comment => {

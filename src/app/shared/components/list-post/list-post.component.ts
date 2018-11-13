@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 
 @Component({
@@ -7,14 +7,26 @@ import { AppService } from 'src/app/app.service';
   styleUrls: ['./list-post.component.scss'],
 })
 export class ListPostComponent implements OnInit {
+  @Input()
+  isReset = false;
+
+  @ViewChild('paginator')
+  paginator;
+
   constructor(public app: AppService) {}
 
   ngOnInit() {}
 
   paginate(event) {
-    console.log('paginator ' + event.pageIndex);
+    console.log(this.paginator);
     event.pageIndex++;
     const param = '?page=' + event.pageIndex + '&per_page=' + event.pageSize;
     this.app.loadPosts(param);
+  }
+
+  resetPaginator() {
+    if (this.isReset) {
+      this.paginator.pageIndex = 0;
+    }
   }
 }

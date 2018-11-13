@@ -22,7 +22,7 @@
             <button mat-button *ngIf="post.author === app.wp.getID" (click)="editPost = !editPost"> Edit </button>
             <button mat-button *ngIf="post.author === app.wp.getID" (click)="onDeletePost(post.id)"> Delete </button>
           </mat-card-actions>
-          <mat-divider></mat-divider>
+          <mat-divider *ngIf="showComment"></mat-divider>
 
           <mat-card-footer>
             <!-- Comment -->

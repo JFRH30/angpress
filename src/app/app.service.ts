@@ -14,6 +14,7 @@ export class AppService {
   categories: CategoryResponse[] = null; // for sidebar menu.
   categoryID: number = null; // for post category if there is category selected.
   comments: ViewCommentResponse[] = null; // container for comments.
+  commentReply = {};
   posts: ViewPostResponse[] = null; // container for posts rendered in forum page.
   profileID: number = null; // reference pass to loadUserMedia and loadUserPosts.
   profileMedia: MediaResponse[] = null; // for media component.
@@ -57,12 +58,19 @@ export class AppService {
 
   /**
    * will get categories from wordpress and store in categories.
+   * and load posts if ever the pathname is forum with url param like discussion.
    */
   loadCategories() {
-    this.wp.showCategory().subscribe(data => {
+    this.wp.showCategory().subscribe((data) => {
       this.categories = <CategoryResponse[]>data.body;
-      if (this.isForum) {
-        this.router.navigate(['/forum']);
+      const path = window.location.pathname.split('/');
+      if (path[1] === 'forum' && path[2] && path[2] !== 'post') {
+        (<CategoryResponse[]>data.body).filter((category) => {
+          if (path[2] === category.slug) {
+            this.categoryID = category.id;
+            this.loadPosts();
+          }
+        });
       }
     });
   }
@@ -71,7 +79,7 @@ export class AppService {
    * load contributors for forum.
    */
   loadContributors() {
-    this.wp.showUser().subscribe(data => {
+    this.wp.showUser().subscribe((data) => {
       this.contributors = <ViewUserResponse[]>data.body;
     });
   }
@@ -90,7 +98,7 @@ export class AppService {
       param += 'author=' + this.profileID + '&';
     }
     param += '_embed';
-    this.wp.showPost(param).subscribe(data => {
+    this.wp.showPost(param).subscribe((data) => {
       this.length = parseInt(data.headers.get('X-WP-Total'), 10);
       this.posts = <ViewPostResponse[]>data.body;
       console.log('posts' + param);

@@ -15,12 +15,16 @@ import {
 // Component
 import { ListCommentComponent } from './list-comment.component';
 
+// Featured Module
+import { CreateCommentModule } from '../create-comment/create-comment.module';
+
 @NgModule({
   declarations: [ListCommentComponent],
   imports: [
     CommonModule,
     FormsModule,
     RouterModule,
+    CreateCommentModule,
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
