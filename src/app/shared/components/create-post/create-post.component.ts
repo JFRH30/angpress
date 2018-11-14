@@ -26,12 +26,15 @@ export class CreatePostComponent implements OnInit {
       this.app.categoryID ? (post.categories = this.app.categoryID) : (post.categories = 1);
     }
     post.status = 'publish';
-    this.app.wp.createPost(post, '?_embed').subscribe(data => {
-      console.log(this.app.posts);
-      console.log(data);
-      this.app.posts.unshift(data);
-      alert('You have successfullu posted: ' + data.title.rendered);
-      form.reset();
-    });
+    this.app.wp.createPost(post, '?_embed').subscribe(
+      (data) => {
+        console.log(this.app.posts);
+        console.log(data);
+        this.app.posts.unshift(data);
+        alert('You have successfullu posted: ' + data.title.rendered);
+        form.reset();
+      },
+      (e) => this.app.errorLog(e, 'Create Post'),
+    );
   }
 }

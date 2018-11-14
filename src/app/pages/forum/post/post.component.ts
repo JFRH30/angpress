@@ -22,15 +22,21 @@ export class PostComponent implements OnInit {
 
   loadPost() {
     const param = '/' + this.activatedRoute.snapshot.params['id'] + '?_embed';
-    this.app.wp.showPost(param).subscribe(data => {
-      console.log(data.body);
-      this.post = <ViewPostResponse>data.body;
-    });
+    this.app.wp.showPost(param).subscribe(
+      (data) => {
+        console.log(data.body);
+        this.post = <ViewPostResponse>data.body;
+      },
+      (e) => this.app.errorLog(e, 'Show Post'),
+    );
   }
   onDeletePost(id: number) {
-    this.app.wp.deletePost(id, '?force=true').subscribe(data => {
-      alert('Post is successfully deleted');
-      this.app.router.navigate(['/forum']);
-    });
+    this.app.wp.deletePost(id, '?force=true').subscribe(
+      (data) => {
+        alert('Post is successfully deleted');
+        this.app.router.navigate(['/forum']);
+      },
+      (e) => this.app.errorLog(e, 'Delete Post'),
+    );
   }
 }

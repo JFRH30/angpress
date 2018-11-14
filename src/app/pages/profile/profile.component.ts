@@ -27,9 +27,12 @@ export class ProfileComponent implements OnInit {
     } else {
       this.app.profileID = userID;
     }
-    this.app.wp.showProfile(this.app.profileID).subscribe(data => {
-      this.user = <ViewUserResponse>data;
-    });
+    this.app.wp.showProfile(this.app.profileID).subscribe(
+      (data) => {
+        this.user = <ViewUserResponse>data;
+      },
+      (e) => this.app.errorLog(e, 'Show Profile'),
+    );
     this.app.loadPosts();
   }
 }

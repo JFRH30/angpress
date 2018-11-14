@@ -8,6 +8,7 @@ import {
   ViewCommentResponse,
 } from './models/wordpress.model';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -61,30 +62,36 @@ export class AppService {
    * and load posts if ever the pathname is forum with url param like discussion.
    */
   loadCategories() {
-    this.wp.showCategory().subscribe((data) => {
-      this.categories = <CategoryResponse[]>data.body;
+    this.wp.showCategory().subscribe(
+      (data) => {
+        this.categories = <CategoryResponse[]>data.body;
 
-      const path = window.location.pathname.split('/');
+        const path = window.location.pathname.split('/');
 
-      // detect if the pathname is in the forum
-      if (path[1] === 'forum' && path[2] && path[2] !== 'post') {
-        (<CategoryResponse[]>data.body).filter((category) => {
-          if (path[2] === category.slug) {
-            this.categoryID = category.id;
-            this.loadPosts();
-          }
-        });
-      }
-    });
+        // detect if the pathname is in the forum
+        if (path[1] === 'forum' && path[2] && path[2] !== 'post') {
+          (<CategoryResponse[]>data.body).filter((category) => {
+            if (path[2] === category.slug) {
+              this.categoryID = category.id;
+              this.loadPosts();
+            }
+          });
+        }
+      },
+      (e) => this.errorLog(e, 'Show Categories'),
+    );
   }
 
   /**
    * load contributors for forum.
    */
   loadContributors() {
-    this.wp.showUser().subscribe((data) => {
-      this.contributors = <ViewUserResponse[]>data.body;
-    });
+    this.wp.showUser().subscribe(
+      (data) => {
+        this.contributors = <ViewUserResponse[]>data.body;
+      },
+      (e) => this.errorLog(e, 'Contributors'),
+    );
   }
 
   /**
@@ -102,10 +109,32 @@ export class AppService {
       param += 'author=' + this.profileID + '&';
     }
     param += '_embed';
-    this.wp.showPost(param).subscribe((data) => {
-      this.length = parseInt(data.headers.get('X-WP-Total'), 10);
-      this.posts = <ViewPostResponse[]>data.body;
-      document.getElementsByTagName('mat-sidenav-content')[0].scrollTop = 0; // scroll to top when new posts recieve.
-    });
+    this.wp.showPost(param).subscribe(
+      (data) => {
+        this.length = parseInt(data.headers.get('X-WP-Total'), 10);
+        this.posts = <ViewPostResponse[]>data.body;
+        document.getElementsByTagName('mat-sidenav-content')[0].scrollTop = 0; // scroll to top when new posts recieve.
+      },
+      (e) => this.errorLog(e, 'Posts'),
+    );
+  }
+
+  errorLog(e, from: string) {
+    if (e.error.code && e.error.message) {
+      console.log(
+        'Error Code ' + from + ' :',
+        e.error.code,
+        '| Error Message ' + from + ' :',
+        e.error.message,
+      );
+    } else {
+      if (e.error.code) {
+        console.log('Error Code ' + from + ' :', e.error.code);
+      }
+      if (e.error.message) {
+        console.log('Error Message ' + from + ' :', e.error.message);
+      }
+    }
+    console.log('Error HttpResponse :', e);
   }
 }

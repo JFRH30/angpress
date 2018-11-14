@@ -34,17 +34,20 @@ export class ListCommentComponent implements OnInit {
       parent = parent + this.commentReplyID;
     }
     const param = '?post=' + this.postID + parent + '&order=asc';
-    this.app.wp.showComment(param).subscribe((data) => {
-      if (!this.commentReplyID) {
-        this.app.comments = <ViewCommentResponse[]>data.body;
-      }
-      if (this.commentReplyID) {
-        this.app.commentReply = Object.assign(this.app.commentReply, {
-          [this.commentReplyID]: <ViewCommentResponse[]>data.body,
-        });
-      }
-      console.log(this.app.commentReply);
-    });
+    this.app.wp.showComment(param).subscribe(
+      (data) => {
+        if (!this.commentReplyID) {
+          this.app.comments = <ViewCommentResponse[]>data.body;
+        }
+        if (this.commentReplyID) {
+          this.app.commentReply = Object.assign(this.app.commentReply, {
+            [this.commentReplyID]: <ViewCommentResponse[]>data.body,
+          });
+        }
+        console.log(this.app.commentReply);
+      },
+      (e) => this.app.errorLog(e, 'Show Comments'),
+    );
   }
 
   /**
@@ -56,30 +59,36 @@ export class ListCommentComponent implements OnInit {
     const comment: CommentUpdate = form.value;
     comment.post = this.postID;
     comment.author = this.app.wp.getID;
-    this.app.wp.updateComment(this.commentID, comment).subscribe((data) => {
-      // check if both swith are true.
-      if (this.showEditComment && this.showReply) {
-        this.app.commentReply[this.commentReplyID][index] = Object.assign(
-          this.app.commentReply[this.commentReplyID][index],
-          data,
-        );
-      } else {
-        this.app.comments[index] = Object.assign(this.app.comments[index], data);
-      }
-      // to display updated value.
-      this.showEditComment = false;
-      // reset for next query.
-      this.commentID = null;
-    });
+    this.app.wp.updateComment(this.commentID, comment).subscribe(
+      (data) => {
+        // check if both swith are true.
+        if (this.showEditComment && this.showReply) {
+          this.app.commentReply[this.commentReplyID][index] = Object.assign(
+            this.app.commentReply[this.commentReplyID][index],
+            data,
+          );
+        } else {
+          this.app.comments[index] = Object.assign(this.app.comments[index], data);
+        }
+        // to display updated value.
+        this.showEditComment = false;
+        // reset for next query.
+        this.commentID = null;
+      },
+      (e) => this.app.errorLog(e, 'Update Comment'),
+    );
   }
 
   onDeleteComment(id, index) {
-    this.app.wp.deleteComment(id, '?force=true').subscribe((data) => {
-      if (this.showReply) {
-        this.app.commentReply[this.commentReplyID].splice(index, 1);
-      } else {
-        this.app.comments.splice(index, 1);
-      }
-    });
+    this.app.wp.deleteComment(id, '?force=true').subscribe(
+      (data) => {
+        if (this.showReply) {
+          this.app.commentReply[this.commentReplyID].splice(index, 1);
+        } else {
+          this.app.comments.splice(index, 1);
+        }
+      },
+      (e) => this.app.errorLog(e, 'Delete Comment'),
+    );
   }
 }

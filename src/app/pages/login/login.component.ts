@@ -21,14 +21,12 @@ export class LoginComponent implements OnInit {
    */
   onSubmit(form) {
     this.app.wp.login(form.value.username, form.value.password).subscribe(
-      data => {
+      (data) => {
         const user = <EditUserResponse>data;
         alert('Successfully registered and logged as ' + user.name);
         this.route.navigate(['/']);
       },
-      err => {
-        alert('Login error : ' + err.error.code);
-      },
+      (e) => this.app.errorLog(e, 'Login'),
     );
   }
 
@@ -37,7 +35,7 @@ export class LoginComponent implements OnInit {
    */
   checkLog() {
     if (this.app.isLoggedIn) {
-      this.app.wp.showUser().subscribe(data => console.log(data), err => console.log(err));
+      this.app.wp.showUser().subscribe((data) => console.log(data), (err) => console.log(err));
     }
   }
 }

@@ -20,9 +20,12 @@ export class CreateMediaComponent implements OnInit {
     const body = new FormData();
     body.append('file', image); // file upload word with form data, I don't know why.
     body.append('title', '');
-    this.app.wp.createMedia(body).subscribe(data => {
-      this.app.profileMedia = [data, ...this.app.profileMedia];
-    });
+    this.app.wp.createMedia(body).subscribe(
+      (data) => {
+        this.app.profileMedia = [data, ...this.app.profileMedia];
+      },
+      (e) => this.app.errorLog(e, 'Create Media'),
+    );
   }
 
   /**
@@ -30,8 +33,11 @@ export class CreateMediaComponent implements OnInit {
    */
   loadUserMedia() {
     const param = '?author=' + this.app.wp.getID + '&_embed';
-    this.app.wp.showMedia(param).subscribe(data => {
-      this.app.profileMedia = <MediaResponse[]>data.body;
-    });
+    this.app.wp.showMedia(param).subscribe(
+      (data) => {
+        this.app.profileMedia = <MediaResponse[]>data.body;
+      },
+      (e) => this.app.errorLog(e, 'Profile Media'),
+    );
   }
 }

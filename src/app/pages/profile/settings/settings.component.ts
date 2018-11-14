@@ -27,14 +27,17 @@ export class SettingsComponent implements OnInit {
    * @param form data form #updateUser.
    */
   onUpdate(form) {
-    this.app.wp.updateUser(form.value, '/me').subscribe(data => {
-      this.user = <EditUserResponse>data;
-      if (form.value.password) {
-        form.reset();
-        alert('You have successfully updated your Password');
-      } else {
-        alert('You have successfully updated your Profile');
-      }
-    });
+    this.app.wp.updateUser(form.value, '/me').subscribe(
+      (data) => {
+        this.user = <EditUserResponse>data;
+        if (form.value.password) {
+          form.reset();
+          alert('You have successfully updated your Password');
+        } else {
+          alert('You have successfully updated your Profile');
+        }
+      },
+      (e) => this.app.errorLog(e, 'Profile Update'),
+    );
   }
 }

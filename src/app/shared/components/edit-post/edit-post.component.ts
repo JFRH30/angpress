@@ -18,16 +18,22 @@ export class EditPostComponent implements OnInit {
 
   loadMedia() {
     const param = '?author=' + this.app.wp.getID + '&_embed';
-    this.app.wp.showMedia(param).subscribe(data => {
-      this.app.profileMedia = <MediaResponse[]>data.body;
-    });
+    this.app.wp.showMedia(param).subscribe(
+      (data) => {
+        this.app.profileMedia = <MediaResponse[]>data.body;
+      },
+      (e) => this.app.errorLog(e, 'Profile Media'),
+    );
   }
 
   onUpdatePost(form) {
     const value = form.value;
-    this.app.wp.updatePost(this.editPost.id, value).subscribe(data => {
-      this.editPost = Object.assign(this.editPost, data);
-      alert('You have successfully edited post: ' + this.editPost.title.rendered);
-    });
+    this.app.wp.updatePost(this.editPost.id, value).subscribe(
+      (data) => {
+        this.editPost = Object.assign(this.editPost, data);
+        alert('You have successfully edited post: ' + this.editPost.title.rendered);
+      },
+      (e) => this.app.errorLog(e, 'Update Post'),
+    );
   }
 }

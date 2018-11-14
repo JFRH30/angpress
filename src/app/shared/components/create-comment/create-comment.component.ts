@@ -31,9 +31,7 @@ export class CreateCommentComponent implements OnInit {
         }
         form.reset();
       },
-      (err) => {
-        alert('Comment error: ' + err.error.code);
-      },
+      (e) => this.app.errorLog(e, 'Create Comment'),
     );
   }
 }
