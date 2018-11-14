@@ -119,20 +119,37 @@ export class AppService {
     );
   }
 
+  /**
+   * will return error using subscribe error handling.
+   * @param e error object from angular.
+   * @param from which request give this error (i.e. Login)
+   */
   errorLog(e, from: string) {
     if (e.error.code && e.error.message) {
       console.log(
-        'Error Code ' + from + ' :',
+        'Error Code ' + from + ' : ',
         e.error.code,
-        '| Error Message ' + from + ' :',
+        '| Error Message ' + from + ' : ',
         e.error.message,
+      );
+      alert(
+        'Error Code ' +
+          from +
+          ' : ' +
+          e.error.code +
+          '\nError Message ' +
+          from +
+          ' : ' +
+          e.error.message,
       );
     } else {
       if (e.error.code) {
-        console.log('Error Code ' + from + ' :', e.error.code);
+        console.log('Error Code ' + from + ' : ', e.error.code);
+        alert('Error Code ' + from + ' :' + e.error.code);
       }
       if (e.error.message) {
-        console.log('Error Message ' + from + ' :', e.error.message);
+        console.log('Error Message ' + from + ' : ', e.error.message);
+        alert('Error Message ' + from + ' : ' + e.error.message);
       }
     }
     console.log('Error HttpResponse :', e);
