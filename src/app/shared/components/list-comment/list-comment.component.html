@@ -60,7 +60,7 @@
         <ng-container *ngIf="showReply && commentReplyID === comment.id">
           <ng-container *ngIf="!app.commentReply; else: replies"></ng-container>
           <create-comment-component
-            *ngIf="comment.id === commentReplyID"
+            *ngIf="comment.id === commentReplyID && app.isLoggedIn"
             [postID]="comment.post"
             [parentID]="comment.id"
           ></create-comment-component>
