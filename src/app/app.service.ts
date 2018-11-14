@@ -14,7 +14,7 @@ export class AppService {
   categories: CategoryResponse[] = null; // for sidebar menu.
   categoryID: number = null; // for post category if there is category selected.
   comments: ViewCommentResponse[] = null; // container for comments.
-  commentReply = {};
+  commentReply = {}; // store reply.
   posts: ViewPostResponse[] = null; // container for posts rendered in forum page.
   profileID: number = null; // reference pass to loadUserMedia and loadUserPosts.
   profileMedia: MediaResponse[] = null; // for media component.
@@ -63,7 +63,10 @@ export class AppService {
   loadCategories() {
     this.wp.showCategory().subscribe((data) => {
       this.categories = <CategoryResponse[]>data.body;
+
       const path = window.location.pathname.split('/');
+
+      // detect if the pathname is in the forum
       if (path[1] === 'forum' && path[2] && path[2] !== 'post') {
         (<CategoryResponse[]>data.body).filter((category) => {
           if (path[2] === category.slug) {

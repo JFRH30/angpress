@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "angpress": "ng s -o --host angpress.sonub.com --port 8443 --disable-host-check --ssl --ssl-key ./tmp/ssl/sonub-private.key --ssl-cert ./tmp/ssl/sonub-certificate-ca-bundle.crt"
+    "angpress": "ng s -o --host angpress.sonub.com --port 8443 --disable-host-check --ssl --ssl-key ./tmp/ssl/sonub-private.key --ssl-cert ./tmp/ssl/sonub-certificate-ca-bundle.crt",
+    "angpress:prod": "ng build --prod --delete-output-path=false --output-path=D:/development/www/angpress/prod"
   },
   "private": true,
   "dependencies": {
@@ -22,7 +23,9 @@
     "@angular/material": "^7.0.3",
     "@angular/platform-browser": "^7.0.3",
     "@angular/platform-browser-dynamic": "^7.0.3",
+    "@angular/pwa": "^0.10.5",
     "@angular/router": "^7.0.3",
+    "@angular/service-worker": "^7.0.3",
     "bootstrap": "^4.1.3",
     "chance": "^1.0.16",
     "core-js": "^2.5.4",

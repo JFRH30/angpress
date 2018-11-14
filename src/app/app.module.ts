@@ -17,6 +17,8 @@ import { AppComponent } from './app.component';
 
 // Service
 import { AppService } from './app.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +31,7 @@ import { AppService } from './app.service';
     MatSidenavModule,
     NavModule,
     SidenavModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [AppService],
   bootstrap: [AppComponent],

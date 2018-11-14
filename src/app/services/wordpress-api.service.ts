@@ -139,6 +139,7 @@ export class WordpressApiService {
    * @description note: for admin only.
    */
   createCategory(category: CategoryCreate, param?: string) {
+    // not yet used but tested
     const validParam = this.checkParam(param);
     return this.http.post(CATEGORY_ENDPOINT + validParam, category, this.getWPPass);
   }
@@ -161,6 +162,7 @@ export class WordpressApiService {
    * @description note: for admin only.
    */
   updateCategory(id: number, category: CategoryUpdate, param?: string) {
+    // not yet used but tested
     const validParam = this.checkParam(param);
     return this.http.post(CATEGORY_ENDPOINT + '/' + id + validParam, category, this.getWPPass);
   }
@@ -173,6 +175,7 @@ export class WordpressApiService {
    * @description note: for admin only.
    */
   deleteCategory(id: number, param?: string) {
+    // not yet used but tested
     const validParam = this.checkParam(param);
     return this.http.delete(CATEGORY_ENDPOINT + '/' + id + validParam, this.getWPPass);
   }
@@ -259,6 +262,7 @@ export class WordpressApiService {
    * @description for register user only and owner only.
    */
   updateMedia(id: number, media: MediaUpdate, param?: string) {
+    // not yet used but tested
     const validParam = this.checkParam(param);
     return this.http.post(MEDIA_ENDPOINT + '/' + id + validParam, media, this.getWPPass);
   }
@@ -271,6 +275,7 @@ export class WordpressApiService {
    * @description for register user only and owner only.
    */
   deleteMedia(id: number, param?: string) {
+    // not yet used but tested
     const validParam = this.checkParam(param);
     return this.http.delete(MEDIA_ENDPOINT + '/' + id + validParam, this.getWPPass);
   }
@@ -335,7 +340,9 @@ export class WordpressApiService {
    */
   register(user: UserCreate, param?: string) {
     const validParam = this.checkParam(param);
-    return this.http.post<EditUserResponse>(USER_ENDPOINT + validParam, user).pipe(tap(data => this.saveLocale(data)));
+    return this.http
+      .post<EditUserResponse>(USER_ENDPOINT + validParam, user)
+      .pipe(tap((data) => this.saveLocale(data)));
   }
 
   /**
@@ -377,7 +384,7 @@ export class WordpressApiService {
     const validParam = this.checkParam(param);
     return this.http
       .post<EditUserResponse>(USER_ENDPOINT + validParam, user, this.getWPPass)
-      .pipe(tap(data => this.saveLocale(data)));
+      .pipe(tap((data) => this.saveLocale(data)));
   }
 
   /**
@@ -389,6 +396,7 @@ export class WordpressApiService {
    * @description for register user only and owner only.
    */
   deleteUser(reassign: number, id?: number, param?: string) {
+    // not yet used but tested
     const validParam = this.checkParam(param);
     let user: string | number = '';
     if (!id) {
@@ -408,7 +416,7 @@ export class WordpressApiService {
    */
   login(username: string, password: string) {
     const options = this.gethttpHeaders({ id: username, password: password });
-    return this.showProfile(undefined, '/me?context=edit', options).pipe(tap(data => this.saveLocale(data)));
+    return this.showProfile(undefined, '/me?context=edit', options).pipe(tap((data) => this.saveLocale(data)));
   }
 
   /**

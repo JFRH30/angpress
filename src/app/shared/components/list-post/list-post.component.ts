@@ -18,7 +18,6 @@ export class ListPostComponent implements OnInit {
   ngOnInit() {}
 
   paginate(event) {
-    console.log(this.paginator);
     event.pageIndex++;
     const param = '?page=' + event.pageIndex + '&per_page=' + event.pageSize;
     this.app.loadPosts(param);

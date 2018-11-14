@@ -22,13 +22,18 @@ export class CreateCommentComponent implements OnInit {
     comment.post = this.postID;
     comment.parent = this.parentID ? this.parentID : 0;
     comment.author = this.app.wp.getID;
-    this.app.wp.createComment(comment).subscribe((data) => {
-      if (this.parentID) {
-        this.app.commentReply[this.parentID].push(<ViewPostResponse>data);
-      } else {
-        this.app.comments.push(<ViewPostResponse>data);
-      }
-      form.reset();
-    });
+    this.app.wp.createComment(comment).subscribe(
+      (data) => {
+        if (this.parentID) {
+          this.app.commentReply[this.parentID].push(<ViewPostResponse>data);
+        } else {
+          this.app.comments.push(<ViewPostResponse>data);
+        }
+        form.reset();
+      },
+      (err) => {
+        alert('Comment error: ' + err.error.code);
+      },
+    );
   }
 }

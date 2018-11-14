@@ -28,25 +28,29 @@
           disableRipple
           class="p-0 m-0"
           (click)="
-            showReply =
-              !showReply && commentReplyID !== comment.id
-                ? (commentReplyID = comment.id)
-                : (commentReplyID = comment.id);
+            showReply && commentReplyID !== comment.id
+              ? (commentReplyID = comment.id)
+              : (showReply =
+                  !showReply && commentReplyID !== comment.id
+                    ? (commentReplyID = comment.id)
+                    : (commentReplyID = null));
             loadComments()
           "
         >
-          Reply
+          {{ showReply && commentReplyID === comment.id ? 'Hide' : 'Reply' }}
         </a>
         <a
           *ngIf="comment.author === app.wp.getID"
           mat-button
           disableRipple
           (click)="
-            showEditComment =
-              !showEditComment && commentID !== comment.id ? (commentID = comment.id) : (commentID = comment.id)
+            showEditComment && commentID !== comment.id
+              ? (commentID = comment.id)
+              : (showEditComment =
+                  !showEditComment && commentID !== comment.id ? (commentID = comment.id) : (commentID = null))
           "
         >
-          Edit
+          {{ showEditComment && commentID === comment.id ? 'Cancel' : 'Edit' }}
         </a>
         <a *ngIf="comment.author === app.wp.getID" mat-button disableRipple (click)="onDeleteComment(comment.id, i)">
           Delete
@@ -98,10 +102,13 @@
             mat-button
             disableRipple
             (click)="
-              showEditComment = !showEditComment && commentID !== reply.id ? (commentID = reply.id) : (commentID = null)
+              showEditComment && commentID !== reply.id
+                ? (commentID = reply.id)
+                : (showEditComment =
+                    !showEditComment && commentID !== reply.id ? (commentID = reply.id) : (commentID = null))
             "
           >
-            Edit
+            {{ showEditComment && commentID === reply.id ? 'Cancel' : 'Edit' }}
           </a>
           <a *ngIf="reply.author === app.wp.getID" mat-button disableRipple (click)="onDeleteComment(reply.id, i)">
             Delete

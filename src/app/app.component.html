@@ -1,9 +1,5 @@
 <nav-component (menuClick)="sidenav.toggle()"></nav-component>
 <mat-sidenav-container class="h-100">
-  <mat-sidenav #sidenav mode="over">
-    <sidenav-component></sidenav-component>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+  <mat-sidenav #sidenav mode="over"> <sidenav-component></sidenav-component> </mat-sidenav>
+  <mat-sidenav-content role="main"> <router-outlet></router-outlet> </mat-sidenav-content>
 </mat-sidenav-container>
