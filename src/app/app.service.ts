@@ -104,7 +104,7 @@ export class AppService {
     this.wp.showPost(param).subscribe((data) => {
       this.length = parseInt(data.headers.get('X-WP-Total'), 10);
       this.posts = <ViewPostResponse[]>data.body;
-      console.log('posts' + param);
+      document.getElementsByTagName('mat-sidenav-content')[0].scrollTop = 0; // scroll to top when new posts recieve.
     });
   }
 }

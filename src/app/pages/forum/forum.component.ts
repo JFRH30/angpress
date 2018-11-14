@@ -18,21 +18,21 @@ export class ForumComponent implements OnInit {
 
   doLoadCategoryPosts() {
     this.app.profileID = null; // to search all post through category.
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe((params) => {
       if (params['slug'] == null) {
         this.category = 'All Posts';
         this.app.categoryID = null;
       }
       if (this.app.categories !== null) {
-        this.app.categories.filter(category => {
+        this.app.categories.filter((category) => {
           if (category.slug === params['slug']) {
             this.category = category.name;
             this.app.categoryID = category.id;
           }
         });
       }
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false; // this reload the route logically speaking.
       this.app.loadPosts();
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false; // for paginator to reset to zero.
     });
   }
 }
