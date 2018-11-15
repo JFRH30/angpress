@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 
 @Component({
@@ -7,7 +7,12 @@ import { AppService } from 'src/app/app.service';
   styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent implements OnInit {
+  @Output() routed = new EventEmitter();
   constructor(public app: AppService) {}
 
   ngOnInit() {}
+
+  onNavigate() {
+    this.routed.emit();
+  }
 }
