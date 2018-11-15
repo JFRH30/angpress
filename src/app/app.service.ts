@@ -100,7 +100,6 @@ export class AppService {
    * @param param (optional) for pagination for now.
    */
   loadPosts(param?: string) {
-    this.posts = null; // empty posts for new posts so spinner will work when loading.
     param ? (param += '&') : (param = '?');
     if (this.categoryID) {
       param += 'categories=' + this.categoryID + '&';
