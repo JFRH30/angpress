@@ -1,24 +1,23 @@
 <main class="container mt-3 mat-typography">
   <div class="row">
-
     <div class="col-md-4">
       <!-- Profile -->
       <mat-card class="mb-3 mat-typography">
-        <ng-container *ngIf="user ; else loader">
+        <loader-component *ngIf="!user" text="Loading User..."></loader-component>
+        <ng-container *ngIf="user">
           <mat-card-header>
-            <img mat-card-avatar mat-card-md-image [src]="user.avatar_urls['96']" alt="">
+            <img mat-card-avatar mat-card-md-image [src]="user.avatar_urls['96']" alt="" />
             <mat-card-title> {{ user.name }} </mat-card-title>
             <mat-card-subtitle>{{ user.description }}</mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-actions *ngIf="app.isLoggedIn && user.id === app.wp.getID" align=" end">
-            <button mat-raised-button color="primary" [routerLink]="['/profile/settings']"> Settings </button>
+            <button mat-raised-button color="primary" [routerLink]="['/profile/settings']">Settings</button>
           </mat-card-actions>
         </ng-container>
       </mat-card>
 
       <!-- Media -->
-
       <ng-container *ngIf="user">
         <create-media-component *ngIf="app.isLoggedIn && user.id === app.wp.getID"></create-media-component>
       </ng-container>
@@ -32,11 +31,5 @@
       <!-- List Post -->
       <list-post-component></list-post-component>
     </div>
-
   </div>
 </main>
-
-<!-- Spinner -->
-<ng-template #loader>
-  <mat-spinner class="m-auto"></mat-spinner>
-</ng-template>

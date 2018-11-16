@@ -17,6 +17,8 @@ export class ListCommentComponent implements OnInit {
   showEditComment = false; // switch for editing comment.
   showReply = false; // switch for displaying replies.
 
+  disable = false;
+
   constructor(public app: AppService) {}
 
   ngOnInit() {
@@ -33,7 +35,7 @@ export class ListCommentComponent implements OnInit {
     } else {
       parent = parent + this.commentReplyID;
     }
-    const param = '?post=' + this.postID + parent + '&order=asc';
+    const param = '?post=' + this.postID + parent + '&per_page=100&order=asc';
     this.app.wp.showComment(param).subscribe(
       (data) => {
         if (!this.commentReplyID) {
@@ -59,6 +61,7 @@ export class ListCommentComponent implements OnInit {
     const comment: CommentUpdate = form.value;
     comment.post = this.postID;
     comment.author = this.app.wp.getID;
+    this.disable = true;
     this.app.wp.updateComment(this.commentID, comment).subscribe(
       (data) => {
         // check if both swith are true.
@@ -74,12 +77,25 @@ export class ListCommentComponent implements OnInit {
         this.showEditComment = false;
         // reset for next query.
         this.commentID = null;
+        this.disable = false;
       },
-      (e) => this.app.errorLog(e, 'Update Comment'),
+      (e) => {
+        this.app.errorLog(e, 'Update Comment');
+        this.disable = false;
+      },
     );
   }
 
+  /**
+   * will delete it with force.
+   * @param id the id of the comment to delete.
+   * @param index the position in array app.commentReply.
+   */
   onDeleteComment(id, index) {
+    if (this.disable) {
+      return;
+    }
+    this.disable = true;
     this.app.wp.deleteComment(id, '?force=true').subscribe(
       (data) => {
         if (this.showReply) {
@@ -87,8 +103,12 @@ export class ListCommentComponent implements OnInit {
         } else {
           this.app.comments.splice(index, 1);
         }
+        this.disable = false;
       },
-      (e) => this.app.errorLog(e, 'Delete Comment'),
+      (e) => {
+        this.app.errorLog(e, 'Delete Comment');
+        this.disable = false;
+      },
     );
   }
 }

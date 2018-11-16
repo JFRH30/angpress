@@ -1,14 +1,13 @@
 <header class="container mt-3 mat-typography">
-  <h1> {{ category | uppercase }} </h1>
+  <h1>{{ category | uppercase }}</h1>
 </header>
 
 <main class="container mat-typography">
   <div class="row ">
-
     <div class="col-md-8">
       <!-- Quick Post -->
       <create-post-component *ngIf="app.isLoggedIn"></create-post-component>
-      <!-- 10 Recent Post  -->
+      <!-- 10 Recent Post -->
       <list-post-component></list-post-component>
     </div>
 
@@ -16,6 +15,5 @@
       <!-- Contributors -->
       <contributor-component></contributor-component>
     </div>
-
   </div>
 </main>

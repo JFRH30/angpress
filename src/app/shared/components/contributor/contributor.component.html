@@ -1,7 +1,8 @@
 <mat-card class="mb-3 mat-typography">
   <mat-card-content>
     <h2>Contributors</h2>
-    <ng-container *ngIf="app.contributors; else: loader">
+    <loader-component *ngIf="!app.contributors" text="Loading Contributors..."></loader-component>
+    <ng-container *ngIf="app.contributors">
       <img
         [matTooltip]="user.name"
         *ngFor="let user of app.contributors"
@@ -13,6 +14,3 @@
     </ng-container>
   </mat-card-content>
 </mat-card>
-
-<!-- Spinner -->
-<ng-template #loader> <mat-spinner class="m-auto"></mat-spinner> </ng-template>

@@ -2,9 +2,20 @@
   <mat-list-item *ngFor="let comment of app.comments; index as i" id="comment-list" class="h-auto">
     <img matListAvatar [src]="comment.author_avatar_urls['96']" alt="" />
     <mat-card matline class="ml-3">
-      <mat-card-subtitle> {{ comment.author_name }} Date: {{ comment.date | date: 'medium' }} </mat-card-subtitle>
+      <mat-card-subtitle class="d-flex justify-content-between">
+        {{ comment.author_name }} Date: {{ comment.date | date: 'mediumDate' }}
+        <!-- Delete botton -->
+        <a
+          class="del-btn"
+          *ngIf="comment.author === app.wp.getID"
+          matTooltip="Delete"
+          matTooltipPosition="after"
+          (click)="onDeleteComment(comment.id, i)"
+        >
+          <mat-icon> delete_sweep </mat-icon>
+        </a>
+      </mat-card-subtitle>
       <mat-card-content *ngIf="comment.id !== commentID" [innerHTML]="comment.content.rendered"> </mat-card-content>
-
       <form
         *ngIf="showEditComment && comment.id === commentID"
         matLine
@@ -18,15 +29,15 @@
             name="content"
             [(ngModel)]="app.comments[i].content.rendered.split('<')[1].split('>')[1]"
           />
-          <button matSuffix mat-icon-button type="submit"><mat-icon> send </mat-icon></button>
+          <button matSuffix mat-icon-button type="submit" [disabled]="disable"><mat-icon> send </mat-icon></button>
         </mat-form-field>
       </form>
 
       <mat-card-actions class="m-0">
         <a
+          class="p-0 m-0"
           mat-button
           disableRipple
-          class="p-0 m-0"
           (click)="
             showReply && commentReplyID !== comment.id
               ? (commentReplyID = comment.id)
@@ -38,6 +49,7 @@
           "
         >
           {{ showReply && commentReplyID === comment.id ? 'Hide' : 'Reply' }}
+          <mat-icon> {{ showReply && commentReplyID === comment.id ? 'unfold_less' : 'reply' }} </mat-icon>
         </a>
         <a
           *ngIf="comment.author === app.wp.getID"
@@ -51,9 +63,7 @@
           "
         >
           {{ showEditComment && commentID === comment.id ? 'Cancel' : 'Edit' }}
-        </a>
-        <a *ngIf="comment.author === app.wp.getID" mat-button disableRipple (click)="onDeleteComment(comment.id, i)">
-          Delete
+          <mat-icon> {{ showEditComment && commentID === comment.id ? 'cancel' : 'edit' }} </mat-icon>
         </a>
       </mat-card-actions>
       <mat-card-footer>
@@ -76,7 +86,19 @@
     <mat-list-item *ngFor="let reply of app.commentReply[commentReplyID]; index as i" id="comment-list" class="h-auto">
       <img matListAvatar [src]="reply.author_avatar_urls['96']" alt="" />
       <mat-card matline class="ml-3">
-        <mat-card-subtitle> {{ reply.author_name }} Date: {{ reply.date | date: 'medium' }} </mat-card-subtitle>
+        <mat-card-subtitle>
+          {{ reply.author_name }} Date: {{ reply.date | date: 'mediumDate' }}
+          <!-- Delete botton -->
+          <a
+            class="del-btn"
+            *ngIf="reply.author === app.wp.getID"
+            matTooltip="Delete"
+            matTooltipPosition="after"
+            (click)="onDeleteComment(reply.id, i)"
+          >
+            <mat-icon> delete_sweep </mat-icon>
+          </a></mat-card-subtitle
+        >
         <mat-card-content *ngIf="reply.id !== commentID" [innerHTML]="reply.content.rendered"> </mat-card-content>
 
         <form
@@ -109,9 +131,7 @@
             "
           >
             {{ showEditComment && commentID === reply.id ? 'Cancel' : 'Edit' }}
-          </a>
-          <a *ngIf="reply.author === app.wp.getID" mat-button disableRipple (click)="onDeleteComment(reply.id, i)">
-            Delete
+            <mat-icon> {{ showEditComment && commentID === reply.id ? 'cancel' : 'edit' }} </mat-icon>
           </a>
         </mat-card-actions>
       </mat-card>

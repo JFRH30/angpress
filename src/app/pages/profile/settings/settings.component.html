@@ -1,115 +1,95 @@
 <main class="container mt-3">
   <div class="row">
-
     <div class="col-md-4">
-
       <!-- USER -->
       <mat-card class="mb-3 mat-typography">
-
         <mat-card-header>
-          <img mat-card-avatar mat-card-md-image [src]="user.avatar_urls['96']" alt="">
-          <mat-card-title> {{ user.name | uppercase}} </mat-card-title>
+          <img mat-card-avatar mat-card-md-image [src]="user.avatar_urls['96']" alt="" />
+          <mat-card-title> {{ user.name | uppercase }} </mat-card-title>
           <mat-card-subtitle> Username: {{ user.username }} </mat-card-subtitle>
           <mat-card-subtitle> Role: {{ user.roles }} </mat-card-subtitle>
           <mat-card-subtitle> Registered: {{ user.registered_date | date }} </mat-card-subtitle>
         </mat-card-header>
-        <hr>
+        <hr />
 
         <mat-card-actions align="end">
-          <button mat-raised-button color="primary" [routerLink]="['/profile']"> Goto Profile </button>
+          <button mat-raised-button color="primary" [routerLink]="['/profile']">Goto Profile</button>
         </mat-card-actions>
-
       </mat-card>
       <!-- END USER -->
-
     </div>
 
     <div class="col-md-8">
-
       <!-- USER INFORMATION -->
       <mat-card class="mb-3 mat-typography">
-
-        <mat-card-header>
-          <mat-card-title> USER INFORMATION </mat-card-title>
-        </mat-card-header>
-        <hr>
+        <mat-card-header> <mat-card-title> USER INFORMATION </mat-card-title> </mat-card-header>
+        <hr />
 
         <!-- UPDATE USER INFORMATION -->
         <mat-card-content class="pt-3">
           <form (ngSubmit)="onUpdate(updateUser)" #updateUser="ngForm">
-
             <mat-form-field appearance="outline">
               <mat-label>Display name</mat-label>
-              <input matInput type="text" name="name" [ngModel]="user.name">
+              <input matInput type="text" name="name" [ngModel]="user.name" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>First name</mat-label>
-              <input matInput type="text" name="first_name" [ngModel]="user.first_name">
+              <input matInput type="text" name="first_name" [ngModel]="user.first_name" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Last name</mat-label>
-              <input matInput type="text" name="last_name" [ngModel]="user.last_name">
+              <input matInput type="text" name="last_name" [ngModel]="user.last_name" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Email</mat-label>
-              <input matInput type="email" name="email" [ngModel]="user.email">
+              <input matInput type="email" name="email" [ngModel]="user.email" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Website</mat-label>
-              <input matInput type="url" name="url" [ngModel]="user.url">
+              <input matInput type="url" name="url" [ngModel]="user.url" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Tell about yourself</mat-label>
               <textarea matInput name="description" rows="5" [ngModel]="user.description"></textarea>
             </mat-form-field>
-            <hr>
+            <hr />
 
             <mat-card-actions align="end" class="m-0 mt-3 p-0">
-              <button mat-raised-button color="primary" type="submit"> Update </button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="disable">Update</button>
             </mat-card-actions>
-
           </form>
         </mat-card-content>
         <!-- END UPDATE USER INFORMATION -->
-
       </mat-card>
       <!-- END USER INFORMATION -->
 
       <!-- SECURITY -->
       <mat-card class="mb-3 mat-typography">
-
-        <mat-card-header>
-          <mat-card-title> SECURITY </mat-card-title>
-        </mat-card-header>
-        <hr>
+        <mat-card-header> <mat-card-title> SECURITY </mat-card-title> </mat-card-header>
+        <hr />
 
         <!-- CHANGE PASWORD -->
         <mat-card-content class="pt-3">
           <form (ngSubmit)="onUpdate(updatePassword)" #updatePassword="ngForm">
-
             <mat-form-field appearance="outline">
               <mat-label>Password</mat-label>
-              <input matInput type="password" name="password" ngModel>
+              <input matInput type="password" name="password" ngModel />
             </mat-form-field>
-            <hr>
+            <hr />
 
             <mat-card-actions align="end" class="m-0 mt-3 p-0">
-              <button mat-raised-button color="primary" type="submit"> Update Password </button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="disable">Update Password</button>
             </mat-card-actions>
-
           </form>
         </mat-card-content>
         <!-- END CHANGE PASSWORD -->
-
       </mat-card>
       <!-- END SECURITY -->
-
     </div>
-
   </div>
 </main>

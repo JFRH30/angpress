@@ -3,16 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { ScrollDispatchModule } from '@angular/cdk/scrolling';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatDividerModule,
-  MatProgressSpinnerModule,
-  MatTooltipModule,
-} from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatIconModule, MatTooltipModule } from '@angular/material';
 
 // Component
 import { CreateMediaComponent } from './create-media.component';
+import { LoaderModule } from '../loader/loader.module';
 
 @NgModule({
   declarations: [CreateMediaComponent],
@@ -23,8 +18,9 @@ import { CreateMediaComponent } from './create-media.component';
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatProgressSpinnerModule,
+    MatIconModule,
     MatTooltipModule,
+    LoaderModule,
   ],
   exports: [CreateMediaComponent],
 })

@@ -1,43 +1,40 @@
 <mat-card class="mb-3 mat-typography">
-
   <!-- HEADER -->
-  <mat-card-header>
-    <mat-card-title> Media </mat-card-title>
-  </mat-card-header>
+  <mat-card-header> <mat-card-title> Media </mat-card-title> </mat-card-header>
   <mat-divider></mat-divider>
   <!-- END HEADER -->
 
   <mat-card-content class="pt-3">
-    <ng-container *ngIf="app.profileMedia; else loader">
-
-      <h1 *ngIf="!app.profileMedia.length"> No media added yet .. </h1>
+    <loader-component *ngIf="!app.profileMedia" text="Loading Media..."></loader-component>
+    <ng-container *ngIf="app.profileMedia">
+      <h1 *ngIf="!app?.profileMedia?.length">No media added yet ..</h1>
 
       <!-- ITEM LISTS -->
       <cdk-virtual-scroll-viewport [itemSize]="app.profileMedia.length" class="media-container">
-        <div *cdkVirtualFor="let medium of app.profileMedia">
-          <div class="d-flex align-items-center">
-            <img mat-card-sm-image [matTooltip]="medium.title.rendered" [src]="medium.guid.rendered" [alt]="medium.title.rendered"
-              class="m-1 mr-3">
-            <h2> {{ medium.title.rendered }} </h2>
+        <div *cdkVirtualFor="let medium of app.profileMedia; index as i">
+          <div class="d-flex align-items-center mat-typography">
+            <img
+              mat-card-sm-image
+              [matTooltip]="medium.title.rendered"
+              [src]="medium.guid.rendered"
+              [alt]="medium.title.rendered"
+              class="m-1 mr-3"
+            />
+            <h3 class="m-0">{{ medium.title.rendered | uppercase }}</h3>
+            <button mat-icon-button (click)="onDeleteImage(medium.id)" [disabled]="disable">
+              <mat-icon> delete_sweep </mat-icon>
+            </button>
           </div>
-          <hr>
+          <hr />
         </div>
       </cdk-virtual-scroll-viewport>
       <!-- END ITEM LISTS -->
-
     </ng-container>
-    <input type="file" name="file" ngModel #image>
+    <input type="file" name="file" ngModel #image />
   </mat-card-content>
   <mat-divider></mat-divider>
 
-
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="onSubmitImage(image)"> Add </button>
+    <button mat-raised-button color="primary" (click)="onSubmitImage(image)" [disabled]="disable">Add</button>
   </mat-card-actions>
-
 </mat-card>
-
-<!-- SPINNER -->
-<ng-template #loader>
-  <mat-spinner class="m-auto"></mat-spinner>
-</ng-template>

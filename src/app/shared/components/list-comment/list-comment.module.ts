@@ -10,6 +10,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 // Component
@@ -31,6 +32,7 @@ import { CreateCommentModule } from '../create-comment/create-comment.module';
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatTooltipModule,
   ],
   exports: [ListCommentComponent],
 })

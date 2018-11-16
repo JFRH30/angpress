@@ -9,6 +9,7 @@ import { AppService } from 'src/app/app.service';
 })
 export class SettingsComponent implements OnInit {
   user: EditUserResponse;
+  disable = false;
   constructor(public app: AppService) {}
 
   ngOnInit() {
@@ -27,6 +28,7 @@ export class SettingsComponent implements OnInit {
    * @param form data form #updateUser.
    */
   onUpdate(form) {
+    this.disable = true;
     this.app.wp.updateUser(form.value, '/me').subscribe(
       (data) => {
         this.user = <EditUserResponse>data;
@@ -36,8 +38,13 @@ export class SettingsComponent implements OnInit {
         } else {
           alert('You have successfully updated your Profile');
         }
+
+        this.disable = false;
       },
-      (e) => this.app.errorLog(e, 'Profile Update'),
+      (e) => {
+        this.app.errorLog(e, 'Profile Update');
+        this.disable = false;
+      },
     );
   }
 }

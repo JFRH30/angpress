@@ -3,13 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatProgressSpinnerModule,
-  MatFormFieldModule,
-  MatInputModule,
-} from '@angular/material';
+import { MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 // Component
 import { ProfileComponent } from './profile.component';
@@ -21,6 +15,7 @@ import { AuthGuard } from 'src/app/services/auth.guard';
 import { CreatePostModule } from 'src/app/shared/components/create-post/create-post.module';
 import { ListPostModule } from 'src/app/shared/components/list-post/list-post.module';
 import { CreateMediaModule } from 'src/app/shared/components/create-media/create-media.module';
+import { LoaderModule } from 'src/app/shared/components/loader/loader.module';
 
 @NgModule({
   declarations: [ProfileComponent],
@@ -46,10 +41,10 @@ import { CreateMediaModule } from 'src/app/shared/components/create-media/create
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule,
     CreatePostModule,
     ListPostModule,
     CreateMediaModule,
+    LoaderModule,
   ],
 })
 export class ProfileModule {}

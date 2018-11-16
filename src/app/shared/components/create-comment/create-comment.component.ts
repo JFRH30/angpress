@@ -12,6 +12,7 @@ export class CreateCommentComponent implements OnInit {
   postID: number;
   @Input()
   parentID: number;
+  disable = false;
 
   constructor(public app: AppService) {}
 
@@ -22,6 +23,7 @@ export class CreateCommentComponent implements OnInit {
     comment.post = this.postID;
     comment.parent = this.parentID ? this.parentID : 0;
     comment.author = this.app.wp.getID;
+    this.disable = true;
     this.app.wp.createComment(comment).subscribe(
       (data) => {
         if (this.parentID) {
@@ -29,9 +31,14 @@ export class CreateCommentComponent implements OnInit {
         } else {
           this.app.comments.push(<ViewPostResponse>data);
         }
+
         form.reset();
+        this.disable = false;
       },
-      (e) => this.app.errorLog(e, 'Create Comment'),
+      (e) => {
+        this.app.errorLog(e, 'Create Comment');
+        this.disable = false;
+      },
     );
   }
 }

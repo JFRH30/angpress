@@ -4,7 +4,7 @@
   "workbench.sideBar.location": "left",
   "window.zoomLevel": -1,
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Atom One Light",
+  "workbench.colorTheme": "Winter is Coming (Dark Blue)",
   "emmet.showSuggestionsAsSnippets": true,
   "emmet.triggerExpansionOnTab": true,
   "html.format.indentInnerHtml": true,
@@ -14,5 +14,6 @@
   "prettier.useTabs": true,
   "prettier.jsxBracketSameLine": true,
   "prettier.trailingComma": "all",
-  "html.format.endWithNewline": true
+  "html.format.endWithNewline": true,
+  "prettier.printWidth": 120
 }

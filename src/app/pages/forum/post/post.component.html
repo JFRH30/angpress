@@ -1,48 +1,52 @@
 <main class="container">
   <div class="row">
-
     <div class="col-md-8">
       <!-- Show Post -->
       <mat-card class="my-3">
-
-        <ng-container *ngIf="post; else loader">
+        <loader-component *ngIf="!post" text="Loading Post ..."></loader-component>
+        <ng-container *ngIf="post">
           <mat-card-header *ngFor="let author of post._embedded.author">
-            <img mat-card-avatar [src]="author.avatar_urls['96']" alt="" [routerLink]="['/profile', author.id]">
-            <mat-card-title> {{ post.title.rendered }} </mat-card-title>
+            <img mat-card-avatar [src]="author.avatar_urls['96']" alt="" [routerLink]="['/profile', author.id]" />
+            <mat-card-title [innerHtml]="post.title.rendered"></mat-card-title>
             <mat-card-subtitle>
-              Posted by: {{ author.name }} Date: {{ post.date | date: 'mediumDate'}}
+              Posted by: {{ author.name }} Date: {{ post.date | date: 'mediumDate' }}
             </mat-card-subtitle>
+            <span class="spacer"></span>
+            <a
+              class="del-btn"
+              *ngIf="post.author === app.wp.getID"
+              matTooltip="Delete"
+              matTooltipPosition="after"
+              (click)="onDeletePost(post.id)"
+            >
+              <mat-icon> delete_sweep </mat-icon>
+            </a>
           </mat-card-header>
-          <img mat-card-image [src]="post._embedded['wp:featuredmedia'][0].source_url" alt="">
+
+          <img mat-card-image [src]="post._embedded['wp:featuredmedia'][0].source_url" alt="" />
           <mat-card-content [innerHtml]="post.content.rendered"></mat-card-content>
           <mat-divider></mat-divider>
 
           <mat-card-actions class="m-0 p-0">
-            <button mat-button (click)="showComment = !showComment"> Comment </button>
-            <button mat-button *ngIf="post.author === app.wp.getID" (click)="editPost = !editPost"> Edit </button>
-            <button mat-button *ngIf="post.author === app.wp.getID" (click)="onDeletePost(post.id)"> Delete </button>
+            <button mat-button (click)="showComment = !showComment">Comment</button>
+            <button mat-button *ngIf="post.author === app.wp.getID" (click)="editPost = !editPost">Edit</button>
           </mat-card-actions>
           <mat-divider *ngIf="showComment"></mat-divider>
 
           <mat-card-footer>
             <!-- Comment -->
-            <create-comment-component *ngIf="app.isLoggedIn && showComment" [postID]="post.id"></create-comment-component>
+            <create-comment-component
+              *ngIf="app.isLoggedIn && showComment"
+              [postID]="post.id"
+            ></create-comment-component>
             <mat-divider></mat-divider>
             <!-- List Comment -->
             <list-comment-component *ngIf="showComment" [postID]="post.id"></list-comment-component>
           </mat-card-footer>
         </ng-container>
-
       </mat-card>
     </div>
 
-    <div class="col-md-4 pt-3">
-      <edit-post-component *ngIf="editPost" [(editPost)]="post"></edit-post-component>
-    </div>
-
+    <div class="col-md-4 pt-3"><edit-post-component *ngIf="editPost" [(editPost)]="post"></edit-post-component></div>
   </div>
 </main>
-
-<ng-template #loader>
-  <mat-spinner class="m-auto"></mat-spinner>
-</ng-template>

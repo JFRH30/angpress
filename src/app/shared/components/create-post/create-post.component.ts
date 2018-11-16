@@ -9,6 +9,7 @@ import { PostCreate, ViewPostResponse } from 'src/app/models/wordpress.model';
 })
 export class CreatePostComponent implements OnInit {
   constructor(public app: AppService) {}
+  disable = false;
 
   ngOnInit() {}
 
@@ -26,6 +27,7 @@ export class CreatePostComponent implements OnInit {
       this.app.categoryID ? (post.categories = this.app.categoryID) : (post.categories = 1);
     }
     post.status = 'publish';
+    this.disable = true;
     this.app.wp.createPost(post, '?_embed').subscribe(
       (data) => {
         console.log(this.app.posts);
@@ -33,8 +35,12 @@ export class CreatePostComponent implements OnInit {
         this.app.posts.unshift(data);
         alert('You have successfullu posted: ' + data.title.rendered);
         form.reset();
+        this.disable = false;
       },
-      (e) => this.app.errorLog(e, 'Create Post'),
+      (e) => {
+        this.app.errorLog(e, 'Create Post');
+        this.disable = false;
+      },
     );
   }
 }

@@ -10,6 +10,8 @@ import { ViewPostResponse, MediaResponse } from 'src/app/models/wordpress.model'
 export class EditPostComponent implements OnInit {
   @Input()
   editPost: ViewPostResponse;
+  disable = false;
+
   constructor(public app: AppService) {}
 
   ngOnInit() {
@@ -28,12 +30,17 @@ export class EditPostComponent implements OnInit {
 
   onUpdatePost(form) {
     const value = form.value;
-    this.app.wp.updatePost(this.editPost.id, value).subscribe(
+    this.disable = true;
+    this.app.wp.updatePost(this.editPost.id, value, '?_embed').subscribe(
       (data) => {
         this.editPost = Object.assign(this.editPost, data);
         alert('You have successfully edited post: ' + this.editPost.title.rendered);
+        this.disable = false;
       },
-      (e) => this.app.errorLog(e, 'Update Post'),
+      (e) => {
+        this.app.errorLog(e, 'Update Post');
+        this.disable = false;
+      },
     );
   }
 }

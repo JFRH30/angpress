@@ -8,7 +8,7 @@ import {
   ViewCommentResponse,
 } from './models/wordpress.model';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { fromEvent } from 'rxjs';
 
 @Injectable()
 export class AppService {
@@ -23,9 +23,10 @@ export class AppService {
   contributors: ViewUserResponse[] | any[] = null; // for contributor component.
 
   // Pagination
-  length: number = null;
-  pageSize = 10;
-  pageIndex = 0;
+  length: number = null; // this holds the value from X-WP-Total
+  page: number = null; // this holds the value from X-WP-TotalPages.
+  pageIndex = 2; // this start with because the first page is already fetch.
+  loading = false; // determine fetching request.
 
   constructor(public router: Router, public wp: WordpressApiService) {
     this.doInit();
@@ -55,6 +56,29 @@ export class AppService {
 
   get isForum() {
     return window.location.pathname.split('/')[1] === 'forum';
+  }
+
+  /**
+   * this is listening in the scroll event of mat-sidenav-content.
+   * when page index is not equal to the X-WP-TotalPage,
+   * it will fetch the remaining page when it scroll near the buttom,
+   * until the index is equal to the X-WP-TotalPage.
+   */
+  scrollObserver() {
+    const container = document.getElementsByTagName('mat-sidenav-content')[0];
+    // listen to scroll event
+    fromEvent(container, 'scroll').subscribe(() => {
+      if (this.posts && this.posts.length <= this.length && this.pageIndex <= this.page && !this.loading) {
+        if (container.scrollHeight - 1000 < container.scrollTop) {
+          console.log('scrolltop:' + container.scrollTop, '   %40 scrollHeight: ' + container.scrollHeight);
+          console.log(this.pageIndex);
+          console.log('loading page' + this.pageIndex);
+          this.loading = true;
+          this.loadPosts('?page=' + this.pageIndex);
+          this.pageIndex++;
+        }
+      }
+    });
   }
 
   /**
@@ -111,8 +135,14 @@ export class AppService {
     this.wp.showPost(param).subscribe(
       (data) => {
         this.length = parseInt(data.headers.get('X-WP-Total'), 10);
-        this.posts = <ViewPostResponse[]>data.body;
-        document.getElementsByTagName('mat-sidenav-content')[0].scrollTop = 0; // scroll to top when new posts recieve.
+        this.page = parseInt(data.headers.get('X-WP-TotalPages'), 10);
+        if (!this.posts) {
+          this.pageIndex = 2;
+          this.posts = <ViewPostResponse[]>data.body;
+        } else {
+          this.posts = [...this.posts, ...(<ViewPostResponse[]>data.body)];
+        }
+        this.loading = false;
       },
       (e) => this.errorLog(e, 'Posts'),
     );
@@ -125,22 +155,8 @@ export class AppService {
    */
   errorLog(e, from: string) {
     if (e.error.code && e.error.message) {
-      console.log(
-        'Error Code ' + from + ' : ',
-        e.error.code,
-        '| Error Message ' + from + ' : ',
-        e.error.message,
-      );
-      alert(
-        'Error Code ' +
-          from +
-          ' : ' +
-          e.error.code +
-          '\nError Message ' +
-          from +
-          ' : ' +
-          e.error.message,
-      );
+      console.log('Error Code ' + from + ' : ', e.error.code, '| Error Message ' + from + ' : ', e.error.message);
+      alert('Error Code ' + from + ' : ' + e.error.code + '\nError Message ' + from + ' : ' + e.error.message);
     } else {
       if (e.error.code) {
         console.log('Error Code ' + from + ' : ', e.error.code);

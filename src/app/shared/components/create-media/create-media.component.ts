@@ -8,24 +8,12 @@ import { AppService } from 'src/app/app.service';
   styleUrls: ['./create-media.component.scss'],
 })
 export class CreateMediaComponent implements OnInit {
-  media: MediaResponse[] = null;
+  disable = false;
+
   constructor(public app: AppService) {}
 
   ngOnInit() {
     this.loadUserMedia();
-  }
-
-  onSubmitImage(file: any) {
-    const image = file.files[0];
-    const body = new FormData();
-    body.append('file', image); // file upload word with form data, I don't know why.
-    body.append('title', '');
-    this.app.wp.createMedia(body).subscribe(
-      (data) => {
-        this.app.profileMedia = [data, ...this.app.profileMedia];
-      },
-      (e) => this.app.errorLog(e, 'Create Media'),
-    );
   }
 
   /**
@@ -38,6 +26,46 @@ export class CreateMediaComponent implements OnInit {
         this.app.profileMedia = <MediaResponse[]>data.body;
       },
       (e) => this.app.errorLog(e, 'Profile Media'),
+    );
+  }
+
+  /**
+   * upload Image.
+   */
+  onSubmitImage(file: any) {
+    const image = file.files[0];
+    const body = new FormData();
+    body.append('file', image); // file upload word with form data, I don't know why.
+    body.append('title', '');
+    this.disable = true;
+    this.app.wp.createMedia(body).subscribe(
+      (data) => {
+        this.app.profileMedia = [data, ...this.app.profileMedia];
+        this.disable = false;
+      },
+      (e) => {
+        this.app.errorLog(e, 'Create Media');
+        this.disable = false;
+      },
+    );
+  }
+
+  /**
+   * will delete selected image.
+   * @param id to be deleted item.
+   */
+  onDeleteImage(id) {
+    this.disable = true;
+    this.app.wp.deleteMedia(id, '?force=true').subscribe(
+      () => {
+        this.loadUserMedia();
+        alert('Successfully deleted');
+        this.disable = false;
+      },
+      (e) => {
+        this.app.errorLog(e, 'Create Media');
+        this.disable = false;
+      },
     );
   }
 }
